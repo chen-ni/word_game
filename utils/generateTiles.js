@@ -32,7 +32,8 @@ export default function generateTiles(col_num, row_num) {
         {
           letter: getRandomLetterWithFrequency(),
           key: getId(),
-          chosen: false
+          chosen: false,
+          positionY: undefined
         }
       )
     }

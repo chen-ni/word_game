@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import {
   StyleSheet,
@@ -6,8 +6,8 @@ import {
   View,
   SafeAreaView,
   TouchableOpacity,
+  Animated
 } from 'react-native';
-import { Engine, Runner, Bodies, Composite} from 'matter-js';
 
 import * as constants from './utils/constants'
 import generateTiles from './utils/generateTiles'
@@ -19,55 +19,40 @@ export default function App() {
   const [lastRowIndex, setLastRowIndex] = useState(null)
   const [wordIsValid, setWordIsValid] = useState(false)
 
-  const [tiles, setTiles] = useState([]);
-  let engine;
-  let runner;
+  const [isInAnimation, setIsInAnimation] = useState(false);
+  const animPositionY = useRef(new Animated.Value(0)).current
+  
+  const [tiles, setTiles] = useState([])
 
   useEffect(() => {
     // initialize tiles
     const tmpTiles = generateTiles(
       constants.NUM_OF_COLUMNS,
       constants.NUM_OF_ROWS
-    );
+    )
 
-    // create an engine and runner
-    engine = Engine.create();
-    runner = Runner.create();
+    calculateTilePositions(tmpTiles)
 
-    // create an object for each tile
-    // and add it to the physics engine
-    tmpTiles.forEach((col, colIndex) => {
+    setTiles(tmpTiles)
+
+  }, [])
+
+  const calculateTilePositions = (tiles) => {
+    tiles.forEach(col => 
       col.forEach((tile, rowIndex) => {
-        const body = Bodies.rectangle(
-          colIndex * constants.TILE_SIZE + constants.TILE_SIZE/2,
-          constants.WINDOW_HEIGHT - (rowIndex * constants.TILE_SIZE + constants.TILE_SIZE/2),
-          constants.TILE_SIZE,
-          constants.TILE_SIZE
-        );
-        Composite.add(engine.world, body);
+        const oldPositionY = tile.positionY
+        tile.positionY = rowIndex * constants.TILE_SIZE
 
-        tile.body = body;
-      })
-    });
-
-    setTiles(tmpTiles);
-
-    // create and add the ground
-    const ground = Bodies.rectangle(
-      constants.GROUND_X, 
-      constants.GROUND_Y, 
-      constants.GROUND_WIDTH, 
-      constants.GROUND_HEIGHT, 
-      { isStatic: true }
-    );
-    Composite.add(engine.world, ground);
-
-    Runner.run(runner, engine);
-    // runner.enabled = 
-
-  }, []);
+        // create an animation if position changed
+        if (oldPositionY && (oldPositionY !== tile.positionY)) {
+          tile.animatedPositionY = new Animated.Value(oldPositionY)
+        } else {
+          tile.animatedPositionY = undefined
+        }
+      }
+    ))
+  }
   
-
   const isValidTapPosition = (colIndex, rowIndex, tile) => {
     console.log({colIndex})
     console.log({rowIndex})
@@ -124,7 +109,6 @@ export default function App() {
   }, [chosenLetters])
 
   const confirmWord = () => {
-    console.log({tiles})
     tiles.forEach(column => {
       for (i=column.length-1; i>=0; i--) {
         const tile = column[i]
@@ -134,11 +118,24 @@ export default function App() {
       }
     })
     reset()
-    
-    runner.enable
-  }
 
-  console.log({tiles})
+    calculateTilePositions(tiles)
+    tiles.forEach(col => {
+      col.forEach(tile => {
+        if (tile.animatedPositionY) {
+          Animated.timing(
+            tile.animatedPositionY,
+            {
+              toValue: tile.positionY,
+              duration: 1000,
+              useNativeDriver: false
+            }
+          ).start();
+        }
+      })
+    })
+    setIsInAnimation(true)
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -171,22 +168,33 @@ export default function App() {
       {
         tiles.map((col, colIndex) => 
           col.map((tile, rowIndex) => (
-            <Text
-              key={tile.key}
-              style={[
-                styles.tile,
-                tile.chosen ? styles.chosen : {},
-                {
-                  // left: colIndex * constants.TILE_SIZE,
-                  // bottom: rowIndex * constants.TILE_SIZE,
-                  left: tile.body.position.x - constants.TILE_SIZE/2,
-                  bottom: (constants.WINDOW_HEIGHT - tile.body.position.y) - constants.TILE_SIZE/2,
-                }
-              ]}
-              onPress={() => handleTapTile(colIndex, rowIndex, tile)}
-            >
-              {tile.letter}
-            </Text>
+            tile.animatedPositionY
+            ? <Animated.Text
+                key={tile.key}
+                style={[
+                  styles.tile,
+                  {
+                    left: colIndex * constants.TILE_SIZE,
+                    bottom: tile.animatedPositionY,
+                  }
+                ]}
+              >
+                {tile.letter}
+              </Animated.Text>
+            : <Text
+                key={tile.key}
+                style={[
+                  styles.tile,
+                  tile.chosen ? styles.chosen : {},
+                  {
+                    left: colIndex * constants.TILE_SIZE,
+                    bottom: rowIndex * constants.TILE_SIZE,
+                  }
+                ]}
+                onPress={() => handleTapTile(colIndex, rowIndex, tile)}
+              >
+                {tile.letter}
+              </Text>
           ))
         )
       }
