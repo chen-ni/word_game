@@ -7,21 +7,66 @@ import {
   SafeAreaView,
   TouchableOpacity,
 } from 'react-native';
-import * as constants from './utils/constants'
+import { Engine, Runner, Bodies, Composite} from 'matter-js';
 
+import * as constants from './utils/constants'
 import generateTiles from './utils/generateTiles'
 import isValidWord from './utils/checkWord'
-
-const tiles = generateTiles(
-  constants.NUM_OF_COLUMNS,
-  constants.NUM_OF_ROWS
-)
 
 export default function App() {
   const [chosenLetters, setChosenLetters] = useState('')
   const [lastColIndex, setLastColIndex] = useState(null)
   const [lastRowIndex, setLastRowIndex] = useState(null)
   const [wordIsValid, setWordIsValid] = useState(false)
+
+  const [tiles, setTiles] = useState([]);
+  let engine;
+  let runner;
+
+  useEffect(() => {
+    // initialize tiles
+    const tmpTiles = generateTiles(
+      constants.NUM_OF_COLUMNS,
+      constants.NUM_OF_ROWS
+    );
+
+    // create an engine and runner
+    engine = Engine.create();
+    runner = Runner.create();
+
+    // create an object for each tile
+    // and add it to the physics engine
+    tmpTiles.forEach((col, colIndex) => {
+      col.forEach((tile, rowIndex) => {
+        const body = Bodies.rectangle(
+          colIndex * constants.TILE_SIZE + constants.TILE_SIZE/2,
+          constants.WINDOW_HEIGHT - (rowIndex * constants.TILE_SIZE + constants.TILE_SIZE/2),
+          constants.TILE_SIZE,
+          constants.TILE_SIZE
+        );
+        Composite.add(engine.world, body);
+
+        tile.body = body;
+      })
+    });
+
+    setTiles(tmpTiles);
+
+    // create and add the ground
+    const ground = Bodies.rectangle(
+      constants.GROUND_X, 
+      constants.GROUND_Y, 
+      constants.GROUND_WIDTH, 
+      constants.GROUND_HEIGHT, 
+      { isStatic: true }
+    );
+    Composite.add(engine.world, ground);
+
+    Runner.run(runner, engine);
+    // runner.enabled = 
+
+  }, []);
+  
 
   const isValidTapPosition = (colIndex, rowIndex, tile) => {
     console.log({colIndex})
@@ -88,9 +133,12 @@ export default function App() {
         }
       }
     })
-    console.log({tiles})
     reset()
+    
+    runner.enable
   }
+
+  console.log({tiles})
 
   return (
     <SafeAreaView style={styles.container}>
@@ -129,8 +177,10 @@ export default function App() {
                 styles.tile,
                 tile.chosen ? styles.chosen : {},
                 {
-                  left: colIndex * constants.TILE_SIZE,
-                  bottom: rowIndex * constants.TILE_SIZE,
+                  // left: colIndex * constants.TILE_SIZE,
+                  // bottom: rowIndex * constants.TILE_SIZE,
+                  left: tile.body.position.x - constants.TILE_SIZE/2,
+                  bottom: (constants.WINDOW_HEIGHT - tile.body.position.y) - constants.TILE_SIZE/2,
                 }
               ]}
               onPress={() => handleTapTile(colIndex, rowIndex, tile)}
