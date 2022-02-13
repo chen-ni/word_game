@@ -1,3 +1,5 @@
+import { NUM_OF_COLUMNS, NUM_OF_ROWS } from './constants';
+
 const getRandomLetterWithFrequency = () => {
   // adapted from https://gist.github.com/furf/2413792
   const lookup = {
@@ -23,11 +25,11 @@ const getRandomLetterWithFrequency = () => {
 
 const getId = () => Math.random().toString(16)
 
-export function generateTiles(col_num, row_num) {
+export function generateTiles() {
   result = []
-  for (i=0; i<col_num; i++) {
+  for (i=0; i<NUM_OF_COLUMNS; i++) {
     col = []
-    for (j=0; j<row_num; j++) {
+    for (j=0; j<NUM_OF_ROWS; j++) {
       col.push(
         {
           letter: getRandomLetterWithFrequency(),

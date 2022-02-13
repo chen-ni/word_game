@@ -11,9 +11,11 @@ import {
 
 import * as constants from './utils/constants'
 import {
+  calculateTilePositions,
   generateTiles,
+  isValidTap,
   isValidWord,
-  getFallDownTime
+  removeChosenTiles
 } from './utils'
 
 export default function App() {
@@ -21,61 +23,15 @@ export default function App() {
   const [lastColIndex, setLastColIndex] = useState(null)
   const [lastRowIndex, setLastRowIndex] = useState(null)
   const [wordIsValid, setWordIsValid] = useState(false)
-
-  const [isInAnimation, setIsInAnimation] = useState(false);
-  const animPositionY = useRef(new Animated.Value(0)).current
   
   const [tiles, setTiles] = useState([])
 
   useEffect(() => {
     // initialize tiles
-    const tmpTiles = generateTiles(
-      constants.NUM_OF_COLUMNS,
-      constants.NUM_OF_ROWS
-    )
-
-    calculateTilePositions(tmpTiles)
-
-    setTiles(tmpTiles)
-
+    const tiles = generateTiles()
+    calculateTilePositions(tiles)
+    setTiles(tiles)
   }, [])
-
-  const calculateTilePositions = (tiles) => {
-    tiles.forEach(col => 
-      col.forEach((tile, rowIndex) => {
-        const oldPositionY = tile.positionY
-        tile.positionY = rowIndex * constants.TILE_SIZE
-
-        // create an animation if position changed
-        if (oldPositionY && (oldPositionY !== tile.positionY)) {
-          tile.animatedPositionY = new Animated.Value(oldPositionY)
-        } else {
-          tile.animatedPositionY = undefined
-        }
-      }
-    ))
-  }
-  
-  const isValidTapPosition = (colIndex, rowIndex, tile) => {
-    console.log({colIndex})
-    console.log({rowIndex})
-    console.log(tile.chosen)
-
-    if (tile.chosen) {
-      return false
-    }
-
-    if (!lastColIndex && !lastRowIndex) {
-      return true
-    }
-
-    if ((Math.abs(colIndex - lastColIndex) > 1)
-      || (Math.abs(rowIndex - lastRowIndex) > 1)){
-      return false
-    }
-
-    return true
-  }
 
   const reset = () => {
     setChosenLetters('')
@@ -90,7 +46,7 @@ export default function App() {
   }
 
   const handleTapTile = (colIndex, rowIndex, tile) => {
-    if (!isValidTapPosition(colIndex, rowIndex, tile)) {
+    if (!isValidTap(colIndex, rowIndex, lastColIndex, lastRowIndex, tile)) {
       return reset()
     }
 
@@ -111,41 +67,10 @@ export default function App() {
     }
   }, [chosenLetters])
 
-  const removeChosenTiles = (tiles) => {
-    tiles.forEach(column => {
-      for (i=column.length-1; i>=0; i--) {
-        const tile = column[i]
-        if (tile.chosen) {
-          column.splice(i, 1)
-        }
-      }
-    })
-  }
-
   const confirmWord = () => {
     removeChosenTiles(tiles);
     reset()
     calculateTilePositions(tiles)
-
-    tiles.forEach(col => {
-      col.forEach(tile => {
-        if (tile.animatedPositionY) {
-          const destPositionY = tile.positionY;
-          const startPositionY = tile.animatedPositionY;
-          const fallDownDistance = destPositionY - startPositionY._value;
-          const fallDownTime = getFallDownTime(fallDownDistance);
-          Animated.timing(
-            tile.animatedPositionY,
-            {
-              toValue: destPositionY,
-              duration: fallDownTime,
-              useNativeDriver: false
-            }
-          ).start();
-        }
-      })
-    })
-    setIsInAnimation(true)
   }
 
   return (
