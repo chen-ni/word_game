@@ -23,7 +23,7 @@ const getRandomLetterWithFrequency = () => {
 
 const getId = () => Math.random().toString(16)
 
-export default function generateTiles(col_num, row_num) {
+export function generateTiles(col_num, row_num) {
   result = []
   for (i=0; i<col_num; i++) {
     col = []

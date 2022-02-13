@@ -10,8 +10,11 @@ import {
 } from 'react-native';
 
 import * as constants from './utils/constants'
-import generateTiles from './utils/generateTiles'
-import isValidWord from './utils/checkWord'
+import {
+  generateTiles,
+  isValidWord,
+  getFallDownTime
+} from './utils'
 
 export default function App() {
   const [chosenLetters, setChosenLetters] = useState('')
@@ -108,7 +111,7 @@ export default function App() {
     }
   }, [chosenLetters])
 
-  const confirmWord = () => {
+  const removeChosenTiles = (tiles) => {
     tiles.forEach(column => {
       for (i=column.length-1; i>=0; i--) {
         const tile = column[i]
@@ -117,17 +120,25 @@ export default function App() {
         }
       }
     })
-    reset()
+  }
 
+  const confirmWord = () => {
+    removeChosenTiles(tiles);
+    reset()
     calculateTilePositions(tiles)
+
     tiles.forEach(col => {
       col.forEach(tile => {
         if (tile.animatedPositionY) {
+          const destPositionY = tile.positionY;
+          const startPositionY = tile.animatedPositionY;
+          const fallDownDistance = destPositionY - startPositionY._value;
+          const fallDownTime = getFallDownTime(fallDownDistance);
           Animated.timing(
             tile.animatedPositionY,
             {
-              toValue: tile.positionY,
-              duration: 1000,
+              toValue: destPositionY,
+              duration: fallDownTime,
               useNativeDriver: false
             }
           ).start();
