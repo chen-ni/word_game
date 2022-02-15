@@ -1,4 +1,4 @@
-import { NUM_OF_COLUMNS, NUM_OF_ROWS } from './constants';
+import { NUM_OF_COLUMNS, NUM_OF_ROWS, TILE_SIZE } from './constants';
 
 const getRandomLetterWithFrequency = () => {
   // adapted from https://gist.github.com/furf/2413792
@@ -35,6 +35,9 @@ export function generateTiles() {
           letter: getRandomLetterWithFrequency(),
           key: getId(),
           chosen: false,
+          colIndex: i,
+          rowIndex: j,
+          positionX: i * TILE_SIZE,
           positionY: undefined
         }
       )

@@ -9,34 +9,39 @@ import {
   Animated
 } from 'react-native';
 
-import * as constants from './utils/constants'
 import {
-  calculateTilePositions,
+  ChosenLetters
+} from './components';
+
+import {
+  updateTilePositions,
   generateTiles,
   isValidTap,
-  isValidWord,
-  removeChosenTiles
-} from './utils'
+  checkWord,
+  removeChosenTiles,
+  TILE_SIZE,
+  GAME_BACKGROUND_COLOR
+} from './utils';
 
 export default function App() {
-  const [chosenLetters, setChosenLetters] = useState('')
-  const [lastColIndex, setLastColIndex] = useState(null)
-  const [lastRowIndex, setLastRowIndex] = useState(null)
-  const [wordIsValid, setWordIsValid] = useState(false)
-  
-  const [tiles, setTiles] = useState([])
+  const [tiles, setTiles] = useState([]);
+  const [chosenTiles, setChosenTiles] = useState([]);
+
+  const chosenLetters = chosenTiles
+    .map(tile => tile.letter)
+    .reduce((a, b) => a + b, '');
+
+  const wordIsValid = checkWord(chosenLetters);
 
   useEffect(() => {
     // initialize tiles
     const tiles = generateTiles()
-    calculateTilePositions(tiles)
+    updateTilePositions(tiles)
     setTiles(tiles)
   }, [])
 
   const reset = () => {
-    setChosenLetters('')
-    setLastColIndex(null)
-    setLastRowIndex(null)
+    setChosenTiles([]);
 
     tiles.forEach(column => {
       column.forEach(tile => {
@@ -45,46 +50,33 @@ export default function App() {
     })
   }
 
-  const handleTapTile = (colIndex, rowIndex, tile) => {
-    if (!isValidTap(colIndex, rowIndex, lastColIndex, lastRowIndex, tile)) {
-      return reset()
+  const handleTapTile = tile => {
+    if (chosenTiles.length > 0) {
+      const lastTile = chosenTiles[chosenTiles.length-1];
+      console.log({lastTile})
+      if (!isValidTap(tile, lastTile)) {
+        return reset()
+      }
     }
 
-    console.log({chosenLetters})
-    console.log(tile.letter)
-    setChosenLetters(chosenLetters + tile.letter)
-    console.log({chosenLetters})
     tile.chosen = true
-    setLastColIndex(colIndex)
-    setLastRowIndex(rowIndex)
+    setChosenTiles([...chosenTiles, tile])
   }
-
-  useEffect(() => {
-    if (isValidWord(chosenLetters)) {
-      setWordIsValid(true)
-    } else {
-      setWordIsValid(false)
-    }
-  }, [chosenLetters])
 
   const confirmWord = () => {
     removeChosenTiles(tiles);
     reset()
-    calculateTilePositions(tiles)
+    updateTilePositions(tiles);
   }
 
   return (
     <SafeAreaView style={styles.container}>
       {/* <StatusBar style="auto" /> */}
       <View style={styles.header}>
-        <Text 
-          style={[
-            styles.wordBoard,
-            wordIsValid ? styles.wordIsValid : {}
-          ]}
-        >
-          {chosenLetters}
-        </Text>
+        <ChosenLetters
+          chosenLetters={chosenLetters}
+          wordIsValid={wordIsValid}
+        />
         {
           wordIsValid && (
             <TouchableOpacity
@@ -97,7 +89,6 @@ export default function App() {
                 It's a word! Tap here to confirm Tap here to confirm
               </Text>
             </TouchableOpacity>
-              
           )
         }
       </View>
@@ -110,7 +101,7 @@ export default function App() {
                 style={[
                   styles.tile,
                   {
-                    left: colIndex * constants.TILE_SIZE,
+                    left: tile.positionX,
                     bottom: tile.animatedPositionY,
                   }
                 ]}
@@ -123,11 +114,11 @@ export default function App() {
                   styles.tile,
                   tile.chosen ? styles.chosen : {},
                   {
-                    left: colIndex * constants.TILE_SIZE,
-                    bottom: rowIndex * constants.TILE_SIZE,
+                    left: tile.positionX,
+                    bottom: tile.positionY,
                   }
                 ]}
-                onPress={() => handleTapTile(colIndex, rowIndex, tile)}
+                onPress={() => handleTapTile(tile)}
               >
                 {tile.letter}
               </Text>
@@ -142,7 +133,7 @@ const styles = StyleSheet.create({
   container: {
     height: '100%',
     position: 'relative',
-    backgroundColor: 'yellow',
+    backgroundColor: GAME_BACKGROUND_COLOR,
   },
   header: {
     backgroundColor: 'transparent',
@@ -152,23 +143,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
-  wordBoard: {
-    fontSize: 20,
-    color: 'black'
-  },
-  wordIsValid: {
-    color: 'red'
-  },
   tile: {
-    fontSize: constants.TILE_SIZE * 0.7, 
-    width: constants.TILE_SIZE,
-    height: constants.TILE_SIZE,
-    backgroundColor: 'white',
+    fontSize: TILE_SIZE * 0.7, 
+    width: TILE_SIZE,
+    height: TILE_SIZE,
+    backgroundColor: '#fce5c0',
     textAlign: 'center',
     position: 'absolute',
-    fontWeight: '200'
+    fontWeight: '200',
+    color: 'black'
   },
   chosen: {
-    backgroundColor: 'gray'
+    color: '#fce5c0',
+    backgroundColor: '#806543'
   }
 });

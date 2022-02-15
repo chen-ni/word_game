@@ -3,7 +3,7 @@ import { Animated } from 'react-native';
 import { getFallDownTime } from './getFallDownTime';
 import { TILE_SIZE } from './constants';
 
-export function calculateTilePositions(tiles) {
+export function updateTilePositions(tiles) {
   tiles.forEach(col => 
     col.forEach((tile, rowIndex) => {
       const oldPositionY = tile.positionY

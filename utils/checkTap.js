@@ -1,11 +1,10 @@
-export function isValidTap(colIndex, rowIndex, lastColIndex, lastRowIndex, tile) {
+export function isValidTap(tile, lastTile) {
   if (tile.chosen) {
-    return false
+    return false;
   }
 
-  if (!lastColIndex && !lastRowIndex) {
-    return true
-  }
+  const { colIndex, rowIndex } = tile;
+  const { colIndex: lastColIndex, rowIndex: lastRowIndex } = lastTile;
 
   if ((Math.abs(colIndex - lastColIndex) > 1)
     || (Math.abs(rowIndex - lastRowIndex) > 1)){
