@@ -10,7 +10,8 @@ import {
 } from 'react-native';
 
 import {
-  ChosenLetters
+  ChosenLetters,
+  ChosenTileConnections
 } from './components';
 
 import {
@@ -53,7 +54,6 @@ export default function App() {
   const handleTapTile = tile => {
     if (chosenTiles.length > 0) {
       const lastTile = chosenTiles[chosenTiles.length-1];
-      console.log({lastTile})
       if (!isValidTap(tile, lastTile)) {
         return reset()
       }
@@ -125,6 +125,8 @@ export default function App() {
           ))
         )
       }
+
+    <ChosenTileConnections chosenTiles={chosenTiles} />
     </SafeAreaView>
   );
 }
@@ -144,14 +146,16 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   tile: {
-    fontSize: TILE_SIZE * 0.7, 
+    fontSize: TILE_SIZE * 0.6, 
     width: TILE_SIZE,
     height: TILE_SIZE,
     backgroundColor: '#fce5c0',
     textAlign: 'center',
     position: 'absolute',
     fontWeight: '200',
-    color: 'black'
+    color: 'black',
+    textAlign: 'center',
+    textAlignVertical: 'center'
   },
   chosen: {
     color: '#fce5c0',
