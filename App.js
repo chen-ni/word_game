@@ -18,7 +18,8 @@ import {
   isValidTap,
   checkWord,
   removeChosenTiles,
-  GAME_BACKGROUND_COLOR
+  GAME_BACKGROUND_COLOR,
+  initializeSounds
 } from './utils';
 
 export default function App() {
@@ -31,11 +32,15 @@ export default function App() {
 
   const wordIsValid = checkWord(chosenLetters);
 
-  // initialize tiles
+  // initialization
   useEffect(() => {
+    // tiles
     const tiles = generateTiles()
     updateTilePositions(tiles)
     setTiles(tiles)
+
+    // sounds
+    initializeSounds();
   }, [])
 
   const reset = () => {

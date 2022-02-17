@@ -2,6 +2,7 @@ import { Animated } from 'react-native';
 
 import { getFallDownTime } from './getFallDownTime';
 import { TILE_SIZE } from './constants';
+import { tileCrashSound } from './sounds';
 
 export function updateTilePositions(tiles) {
   tiles.forEach(col => 
@@ -21,10 +22,13 @@ export function updateTilePositions(tiles) {
             duration: getFallDownTime(fallDownDistance),
             useNativeDriver: false
           }
-        ).start(() => {
-          // callback to call when animation is done
-          tile.animatedPositionY = undefined;
-        });
+        ).start(
+          // callback when animation is done
+          () => {
+            tile.animatedPositionY = undefined;
+            tileCrashSound.replayAsync();
+          }
+        );
       } else {
         tile.animatedPositionY = undefined
       }
