@@ -2,16 +2,14 @@ import { useState, useEffect, useRef } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import {
   StyleSheet,
-  Text,
   View,
   SafeAreaView,
-  TouchableOpacity,
-  Animated
 } from 'react-native';
 
 import {
   ChosenLetters,
-  ChosenTileConnections
+  ChosenTileConnections,
+  Tiles
 } from './components';
 
 import {
@@ -20,7 +18,6 @@ import {
   isValidTap,
   checkWord,
   removeChosenTiles,
-  TILE_SIZE,
   GAME_BACKGROUND_COLOR
 } from './utils';
 
@@ -34,8 +31,8 @@ export default function App() {
 
   const wordIsValid = checkWord(chosenLetters);
 
+  // initialize tiles
   useEffect(() => {
-    // initialize tiles
     const tiles = generateTiles()
     updateTilePositions(tiles)
     setTiles(tiles)
@@ -75,44 +72,12 @@ export default function App() {
       {/* <StatusBar style="auto" /> */}
       <View style={styles.header}>
         <ChosenLetters
-          chosenLetters={chosenLetters}
-          wordIsValid={wordIsValid}
-          confirmWord={confirmWord}
+          {...{chosenLetters, wordIsValid, confirmWord}}
         />
       </View>
-      {
-        tiles.map(col => 
-          col.map(tile => (
-            tile.animatedPositionY
-            ? <Animated.Text
-                key={tile.key}
-                style={[
-                  styles.tile,
-                  {
-                    left: tile.positionX,
-                    bottom: tile.animatedPositionY,
-                  }
-                ]}
-              >
-                {tile.letter}
-              </Animated.Text>
-            : <Text
-                key={tile.key}
-                style={[
-                  styles.tile,
-                  tile.chosen ? styles.chosen : {},
-                  {
-                    left: tile.positionX,
-                    bottom: tile.positionY,
-                  }
-                ]}
-                onPress={() => handleTapTile(tile)}
-              >
-                {tile.letter}
-              </Text>
-          ))
-        )
-      }
+      <Tiles
+        {...{tiles, handleTapTile}}
+      />
 
     <ChosenTileConnections chosenTiles={chosenTiles} />
     </SafeAreaView>
@@ -132,21 +97,5 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center'
-  },
-  tile: {
-    fontSize: TILE_SIZE * 0.6, 
-    width: TILE_SIZE,
-    height: TILE_SIZE,
-    backgroundColor: '#fce5c0',
-    textAlign: 'center',
-    position: 'absolute',
-    fontWeight: '200',
-    color: 'black',
-    textAlign: 'center',
-    textAlignVertical: 'center'
-  },
-  chosen: {
-    color: '#fce5c0',
-    backgroundColor: '#806543'
   }
 });
