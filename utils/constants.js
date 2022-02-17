@@ -10,6 +10,9 @@ export const NUM_OF_ROWS = 13;
 export const TILE_SIZE = WINDOW_WIDTH / NUM_OF_COLUMNS
 
 
+// chosen letters
+export const CHOSEN_LETTERS_BOARD_HEIGHT = 100;
+
 // tile connections
 export const CONNECTION_HEIGHT = TILE_SIZE * 0.7;
 
