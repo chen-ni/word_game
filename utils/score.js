@@ -31,12 +31,13 @@ const letterToScore = [
 ]
 
 export function getScoreForLetter(letter) {
-  letterToScore.forEach(({ value, letters }) => {
+  letter = letter.toLowerCase();
+  for ({ value, letters } of letterToScore) {
     if (letters.includes(letter)) {
       return value;
     }
-  })
-
+  }
+  
   return 0;
 }
 
