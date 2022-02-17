@@ -65,8 +65,9 @@ export default function App() {
 
   const confirmWord = () => {
     removeChosenTiles(tiles);
-    reset()
+    reset();
     updateTilePositions(tiles);
+    setTiles(tiles);
   }
 
   return (

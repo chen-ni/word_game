@@ -41,7 +41,6 @@ export function getScoreForLetter(letter) {
 }
 
 export function getScoreForWord(word) {
-  console.log({word})
   return word
     .split('')
     .map(letter => getScoreForLetter(letter))

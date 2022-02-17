@@ -1,7 +1,8 @@
 import {
   useRef,
+  useState,
   useEffect,
-  useState
+  useLayoutEffect
 } from 'react';
 import {
   Text,
@@ -23,10 +24,9 @@ export const ChosenLetters = ({ chosenLetters, wordIsValid, confirmWord }) => {
   const [score, setScore] = useState('');
   
   // calculate score
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (wordIsValid) {
       const score = getScoreForWord(chosenLetters);
-      console.log({score})
       setScore(`(${score})poiu`);
     } else {
       setScore('');
@@ -47,9 +47,6 @@ export const ChosenLetters = ({ chosenLetters, wordIsValid, confirmWord }) => {
       ).start();
     }
 
-    console.log({lastChosenLetters})
-    console.log({chosenLetters})
-
     // move out
     if (lastChosenLetters.current && !chosenLetters) {
       Animated.timing(
@@ -63,8 +60,6 @@ export const ChosenLetters = ({ chosenLetters, wordIsValid, confirmWord }) => {
     }
 
     lastChosenLetters.current = chosenLetters;
-    console.log({lastChosenLetters})
-
   }, [chosenLetters])
   
   return (

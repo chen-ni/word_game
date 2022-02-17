@@ -6,6 +6,7 @@ import { TILE_SIZE } from './constants';
 export function updateTilePositions(tiles) {
   tiles.forEach(col => 
     col.forEach((tile, rowIndex) => {
+      tile.rowIndex = rowIndex;
       const oldPositionY = tile.positionY
       tile.positionY = rowIndex * TILE_SIZE
 
@@ -20,7 +21,10 @@ export function updateTilePositions(tiles) {
             duration: getFallDownTime(fallDownDistance),
             useNativeDriver: false
           }
-        ).start();
+        ).start(() => {
+          // callback to call when animation is done
+          tile.animatedPositionY = undefined;
+        });
       } else {
         tile.animatedPositionY = undefined
       }
