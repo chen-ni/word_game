@@ -18,9 +18,12 @@ import {
   isValidTap,
   checkWord,
   removeChosenTiles,
-  GAME_BACKGROUND_COLOR,
   initializeSounds
 } from './utils';
+
+import {
+  GAME_BACKGROUND_COLOR
+} from './constants'
 
 export default function App() {
   const [tiles, setTiles] = useState([]);

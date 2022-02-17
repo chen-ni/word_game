@@ -12,10 +12,13 @@ import {
 } from 'react-native';
 
 import {
-  getScoreForWord,
+  getScoreForWord
+} from '../utils';
+
+import {
   CHOSEN_LETTERS_BOARD_HEIGHT,
   WINDOW_WIDTH
-} from '../utils';
+} from '../constants'
 
 export const ChosenLetters = ({ chosenLetters, wordIsValid, confirmWord }) => {
   const lastChosenLetters = useRef('');

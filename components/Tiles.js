@@ -6,7 +6,7 @@ import {
 
 import {
   TILE_SIZE
-} from '../utils'
+} from '../constants'
 
 export const Tiles = ({ tiles, handleTapTile }) => {
 

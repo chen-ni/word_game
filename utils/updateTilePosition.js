@@ -1,7 +1,7 @@
 import { Animated } from 'react-native';
 
 import { getFallDownTime } from './getFallDownTime';
-import { TILE_SIZE } from './constants';
+import { TILE_SIZE } from '../constants';
 import { tileCrashSound } from './sounds';
 
 export function updateTilePositions(tiles) {

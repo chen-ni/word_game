@@ -6,7 +6,7 @@ import {
 import {
   TILE_SIZE,
   CONNECTION_HEIGHT
-} from '../utils'
+} from '../constants'
 
 export function ChosenTileConnections({ chosenTiles }) {
   const connections = [];
