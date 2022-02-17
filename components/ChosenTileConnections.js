@@ -15,7 +15,6 @@ export function ChosenTileConnections({ chosenTiles }) {
   }
 
   chosenTiles.reduce((prevTile, curTile) => {
-    console.log({prevTile})
     let connectionLength;
     let startPositionX;
     let startPositionY;
@@ -25,21 +24,24 @@ export function ChosenTileConnections({ chosenTiles }) {
 
     // diagonal
     if (prevTile.colIndex !== curTile.colIndex && prevTile.rowIndex !== curTile.rowIndex) {
-      connectionLength = TILE_SIZE * 1.8;
+      connectionLength = TILE_SIZE * 2;
       const startTile = prevTile.colIndex < curTile.colIndex
         ? prevTile
         : curTile;
       startPositionX = startTile.colIndex * TILE_SIZE;
       startPositionY = startTile.rowIndex * TILE_SIZE;
+      // slash direction, like `/`
       if ((prevTile.colIndex - curTile.colIndex) * (prevTile.rowIndex - curTile.rowIndex) > 0) {
         rotate = '-45deg';
-        translateY = -0.5 * TILE_SIZE;
-      } else {
-        rotate = '45deg';
-        translateY = 0.5 * TILE_SIZE;
+        translateY = TILE_SIZE * -0.4;
+        translateX = TILE_SIZE * 0.5;
       }
-      rotate = '0deg'
-      translateY = 0;
+      // back-slack direction, like `\`
+      else {
+        rotate = '45deg';
+        translateY = TILE_SIZE * 0.2;
+        translateX = TILE_SIZE * 0.3;
+      }
     }
     // non-diagonal
     else {
@@ -73,16 +75,16 @@ export function ChosenTileConnections({ chosenTiles }) {
       bottom: startPositionY,
       width: connectionLength,
       transform: [
-      {
-        rotate
-      },
-      {
-        translateY
-      },
-      {
-        translateX
-      },
-    ]
+        {
+          rotate
+        },
+        {
+          translateY
+        },
+        {
+          translateX
+        },
+      ]
     }
 
     connections.push({
@@ -90,7 +92,6 @@ export function ChosenTileConnections({ chosenTiles }) {
       style
     });
 
-    console.log({connections})
     return curTile;
   })
 

@@ -93,8 +93,8 @@ export default function App() {
         }
       </View>
       {
-        tiles.map((col, colIndex) => 
-          col.map((tile, rowIndex) => (
+        tiles.map(col => 
+          col.map(tile => (
             tile.animatedPositionY
             ? <Animated.Text
                 key={tile.key}
