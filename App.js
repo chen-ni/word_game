@@ -18,7 +18,8 @@ import {
   isValidTap,
   checkWord,
   removeChosenTiles,
-  initializeSounds
+  initializeSounds,
+  triggerTapSound
 } from './utils';
 
 import {
@@ -57,6 +58,8 @@ export default function App() {
   }
 
   const handleTapTile = tile => {
+    triggerTapSound(chosenTiles.length);
+
     if (chosenTiles.length > 0) {
       const lastTile = chosenTiles[chosenTiles.length-1];
       if (!isValidTap(tile, lastTile)) {
