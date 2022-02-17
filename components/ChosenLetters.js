@@ -1,22 +1,39 @@
 import {
   useRef,
-  useEffect
+  useEffect,
+  useState
 } from 'react';
 import {
   Text,
   StyleSheet,
-  Animated
+  Animated,
+  TouchableOpacity
 } from 'react-native';
 
 import {
+  getScoreForWord,
   CHOSEN_LETTERS_BOARD_HEIGHT,
   WINDOW_WIDTH
 } from '../utils';
 
-export const ChosenLetters = ({ chosenLetters, wordIsValid }) => {
+export const ChosenLetters = ({ chosenLetters, wordIsValid, confirmWord }) => {
   const lastChosenLetters = useRef('');
   const animatedTranslateY = useRef(new Animated.Value(0)).current
+
+  const [score, setScore] = useState('');
   
+  // calculate score
+  useEffect(() => {
+    if (wordIsValid) {
+      const score = getScoreForWord(chosenLetters);
+      console.log({score})
+      setScore(`(${score})poiu`);
+    } else {
+      setScore('');
+    }
+  }, [chosenLetters])
+  
+  // add animation
   useEffect(() => {
     // move in
     if (!lastChosenLetters.current && chosenLetters) {
@@ -63,14 +80,18 @@ export const ChosenLetters = ({ chosenLetters, wordIsValid }) => {
         }
       ]}
     >
-      <Text
-        style={[
-          styles.chosenLetters,
-          wordIsValid ? styles.wordIsValid : {}
-        ]}
+      <TouchableOpacity
+        onPress={() => {if (wordIsValid) {confirmWord()}}}
       >
-        {chosenLetters}
-      </Text>
+        <Text
+          style={[
+            styles.chosenLetters,
+            wordIsValid ? styles.wordIsValid : {}
+          ]}
+        >
+          {chosenLetters + score}
+        </Text>
+      </TouchableOpacity>
     </Animated.View>
   )
 }

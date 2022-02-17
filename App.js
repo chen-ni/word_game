@@ -76,21 +76,8 @@ export default function App() {
         <ChosenLetters
           chosenLetters={chosenLetters}
           wordIsValid={wordIsValid}
+          confirmWord={confirmWord}
         />
-        {
-          wordIsValid && (
-            <TouchableOpacity
-              style={{
-                backgroundColor: 'red'
-              }}
-              onPress={confirmWord}
-            >
-              <Text>
-                It's a word! Tap here to confirm Tap here to confirm
-              </Text>
-            </TouchableOpacity>
-          )
-        }
       </View>
       {
         tiles.map(col => 
