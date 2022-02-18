@@ -4,6 +4,7 @@ export * from './generateTiles';
 export * from './getFallDownTime';
 export * from './removeChosenTiles';
 export * from './score';
+export * from './shuffleTiles';
 export * from './sounds';
 export * from './triggerTapSound';
 export * from './updateTilePosition';

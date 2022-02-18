@@ -27,9 +27,9 @@ const getId = () => Math.random().toString(16)
 
 export function generateTiles() {
   result = []
-  for (i=0; i<NUM_OF_COLUMNS; i++) {
+  for (let i=0; i<NUM_OF_COLUMNS; i++) {
     col = []
-    for (j=0; j<NUM_OF_ROWS; j++) {
+    for (let j=0; j<NUM_OF_ROWS; j++) {
       col.push(
         {
           letter: getRandomLetterWithFrequency(),
@@ -37,8 +37,14 @@ export function generateTiles() {
           chosen: false,
           colIndex: i,
           rowIndex: j,
-          positionX: i * TILE_SIZE,
-          positionY: undefined
+          get positionX() {
+            return this.colIndex * TILE_SIZE;
+          },
+          get positionY() {
+            return this.rowIndex * TILE_SIZE;
+          },
+          animatedPositionX: undefined,
+          animatedPositionY: undefined,
         }
       )
     }

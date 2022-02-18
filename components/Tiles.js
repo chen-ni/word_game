@@ -1,6 +1,5 @@
 import {
   StyleSheet,
-  Text,
   Animated
 } from 'react-native';
 
@@ -8,46 +7,29 @@ import {
   TILE_SIZE
 } from '../constants'
 
-export const Tiles = ({ tiles, handleTapTile }) => {
-
-  return (
-    <>
-      {
-        tiles.map(col => 
-          col.map(tile => (
-            tile.animatedPositionY
-            ? <Animated.Text
-                key={tile.key}
-                style={[
-                  styles.tile,
-                  {
-                    left: tile.positionX,
-                    bottom: tile.animatedPositionY,
-                  }
-                ]}
-              >
-                {tile.letter}
-              </Animated.Text>
-            : <Text
-                key={tile.key}
-                style={[
-                  styles.tile,
-                  tile.chosen ? styles.chosen : {},
-                  {
-                    left: tile.positionX,
-                    bottom: tile.positionY,
-                  }
-                ]}
-                onPress={() => handleTapTile(tile)}
-              >
-                {tile.letter}
-              </Text>
-          ))
+export const Tiles = ({ tiles, handleTapTile }) => 
+  <>
+    {
+      tiles.map(col => 
+        col.map(tile => 
+          <Animated.Text
+            key={tile.key}
+            style={[
+              styles.tile,
+              tile.chosen ? styles.chosen : {},
+              {
+                left: tile.animatedPositionX,
+                bottom: tile.animatedPositionY,
+              }
+            ]}
+            onPress={() => handleTapTile(tile)}
+          >
+            {tile.letter}
+          </Animated.Text>
         )
-      }
-    </>
-  )
-}
+      )
+    }
+  </>
 
 const styles = StyleSheet.create({
   tile: {

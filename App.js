@@ -4,6 +4,7 @@ import {
   StyleSheet,
   View,
   SafeAreaView,
+  Text
 } from 'react-native';
 
 import {
@@ -19,11 +20,12 @@ import {
   checkWord,
   removeChosenTiles,
   initializeSounds,
-  triggerTapSound
+  triggerTapSound,
+  shuffleTiles
 } from './utils';
 
 import {
-  GAME_BACKGROUND_COLOR
+  GAME_BACKGROUND_COLOR, TILE_ANIMATION_TYPES, TILE_SIZE
 } from './constants'
 
 export default function App() {
@@ -47,7 +49,7 @@ export default function App() {
     initializeSounds();
   }, [])
 
-  const reset = () => {
+  const clearChosen = () => {
     setChosenTiles([]);
 
     tiles.forEach(column => {
@@ -61,7 +63,7 @@ export default function App() {
     if (chosenTiles.length > 0) {
       const lastTile = chosenTiles[chosenTiles.length-1];
       if (!isValidTap(tile, lastTile)) {
-        return reset()
+        return clearChosen()
       }
     }
 
@@ -72,9 +74,15 @@ export default function App() {
 
   const confirmWord = () => {
     removeChosenTiles(tiles);
-    reset();
-    updateTilePositions(tiles);
+    clearChosen();
+    updateTilePositions(tiles, TILE_ANIMATION_TYPES.FALL_DOWN);
     setTiles(tiles);
+  }
+
+  const shuffle = () => {
+    clearChosen();
+    const shuffledTiles = shuffleTiles(tiles);
+    setTiles([...shuffledTiles]);
   }
 
   return (
@@ -85,6 +93,18 @@ export default function App() {
           {...{chosenLetters, wordIsValid, confirmWord}}
         />
       </View>
+      {
+        !chosenLetters && (
+          <View>
+            <Text
+              style={styles.shuffleButton}
+              onPress={shuffle}
+            >
+              shuffle
+            </Text>
+          </View>
+        )
+      }
       <Tiles
         {...{tiles, handleTapTile}}
       />
@@ -107,5 +127,14 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  shuffleButton: {
+    position: 'absolute',
+    top: -100,
+    left: 0,
+    width: TILE_SIZE,
+    height: TILE_SIZE,
+    backgroundColor: 'white',
+    color: 'black',
   }
 });

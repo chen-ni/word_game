@@ -1,5 +1,9 @@
 import {
-  NUM_OF_COLUMNS
+  updateTilePositions
+} from './updateTilePosition'
+
+import {
+  NUM_OF_COLUMNS, TILE_ANIMATION_TYPES
 } from '../constants'
 
 export function shuffleTiles(oldTiles) {
@@ -24,6 +28,7 @@ export function shuffleTiles(oldTiles) {
     curColIndex = (curColIndex + 1) % NUM_OF_COLUMNS;
   }
 
+  updateTilePositions(newTiles, TILE_ANIMATION_TYPES.SHUFFLE);
   return newTiles;
 }
 
