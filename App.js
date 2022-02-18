@@ -58,8 +58,6 @@ export default function App() {
   }
 
   const handleTapTile = tile => {
-    triggerTapSound(chosenTiles.length);
-
     if (chosenTiles.length > 0) {
       const lastTile = chosenTiles[chosenTiles.length-1];
       if (!isValidTap(tile, lastTile)) {
@@ -69,6 +67,7 @@ export default function App() {
 
     tile.chosen = true
     setChosenTiles([...chosenTiles, tile])
+    triggerTapSound(chosenTiles.length);
   }
 
   const confirmWord = () => {
