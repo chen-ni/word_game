@@ -19,7 +19,7 @@ export const CHOSEN_LETTERS_BOARD_HEIGHT = 100;
 export const CONNECTION_HEIGHT = TILE_SIZE * 0.7;
 
 // shuffling
-export const SHUFFLE_TIME = 2000; // 2s
+export const SHUFFLE_TIME = 1500; // 1.5s
 
 // tile animation types
 export const TILE_ANIMATION_TYPES = {
