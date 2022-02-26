@@ -10,106 +10,48 @@ import {
 import {
   ChosenLetters,
   ChosenTileConnections,
-  Tiles
+  Tiles,
+  TileInteractionLayer
 } from './components';
 
-import {
-  updateTilePositions,
-  generateTiles,
-  isValidTap,
-  checkWord,
-  removeChosenTiles,
-  initializeSounds,
-  triggerTapSound,
-  shuffleTiles
-} from './utils';
+import { initializeSounds } from './utils';
 
 import {
-  GAME_BACKGROUND_COLOR, TILE_ANIMATION_TYPES, TILE_SIZE
+  GAME_BACKGROUND_COLOR, TILE_SIZE
 } from './constants'
 
+import { getTilesStoreInstance } from './stores';
+
 export default function App() {
-  const [tiles, setTiles] = useState([]);
-  const [chosenTiles, setChosenTiles] = useState([]);
-
-  const chosenLetters = chosenTiles
-    .map(tile => tile.letter)
-    .reduce((a, b) => a + b, '');
-
-  const wordIsValid = checkWord(chosenLetters);
+  const tilesStore = getTilesStoreInstance();
 
   // initialization
   useEffect(() => {
-    // tiles
-    const tiles = generateTiles()
-    updateTilePositions(tiles)
-    setTiles(tiles)
-
     // sounds
     initializeSounds();
   }, [])
-
-  const clearChosen = () => {
-    setChosenTiles([]);
-
-    tiles.forEach(column => {
-      column.forEach(tile => {
-        tile.chosen = false
-      })
-    })
-  }
-
-  const handleTapTile = tile => {
-    if (chosenTiles.length > 0) {
-      const lastTile = chosenTiles[chosenTiles.length-1];
-      if (!isValidTap(tile, lastTile)) {
-        return clearChosen()
-      }
-    }
-
-    tile.chosen = true
-    setChosenTiles([...chosenTiles, tile])
-    triggerTapSound(chosenTiles.length);
-  }
-
-  const confirmWord = () => {
-    removeChosenTiles(tiles);
-    clearChosen();
-    updateTilePositions(tiles, TILE_ANIMATION_TYPES.FALL_DOWN);
-    setTiles(tiles);
-  }
-
-  const shuffle = () => {
-    clearChosen();
-    const shuffledTiles = shuffleTiles(tiles);
-    setTiles([...shuffledTiles]);
-  }
 
   return (
     <SafeAreaView style={styles.container}>
       {/* <StatusBar style="auto" /> */}
       <View style={styles.header}>
-        <ChosenLetters
-          {...{chosenLetters, wordIsValid, confirmWord}}
-        />
+        <ChosenLetters />
       </View>
       {
-        !chosenLetters && (
+        !tilesStore.chosenLetters && (
           <View>
             <Text
               style={styles.shuffleButton}
-              onPress={shuffle}
+              onPress={tilesStore.shuffle}
             >
               shuffle
             </Text>
           </View>
         )
       }
-      <Tiles
-        {...{tiles, handleTapTile}}
-      />
-
-    <ChosenTileConnections chosenTiles={chosenTiles} />
+      <Tiles />
+      <ChosenTileConnections />
+      <TileInteractionLayer />
     </SafeAreaView>
   );
 }

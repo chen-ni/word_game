@@ -8,13 +8,19 @@ import {
   CONNECTION_HEIGHT
 } from '../constants'
 
-export function ChosenTileConnections({ chosenTiles }) {
+import { observer } from "mobx-react-lite"
+
+import { getTilesStoreInstance } from '../stores';
+
+export const ChosenTileConnections = observer(() => {
+  const tilesStore = getTilesStoreInstance();
+
   const connections = [];
-  if (chosenTiles.length < 2) {
+  if (tilesStore.chosenTiles.length < 2) {
     return <></>;
   }
 
-  chosenTiles.reduce((prevTile, curTile) => {
+  tilesStore.chosenTiles.reduce((prevTile, curTile) => {
     let connectionLength;
     let startPositionX;
     let startPositionY;
@@ -110,7 +116,7 @@ export function ChosenTileConnections({ chosenTiles }) {
       }
     </>
   )
-}
+});
 
 const styles = StyleSheet.create({
   baseStyle: {

@@ -11,6 +11,8 @@ import {
   TouchableOpacity
 } from 'react-native';
 
+import { observer } from "mobx-react-lite"
+
 import {
   getScoreForWord
 } from '../utils';
@@ -18,9 +20,13 @@ import {
 import {
   CHOSEN_LETTERS_BOARD_HEIGHT,
   WINDOW_WIDTH
-} from '../constants'
+} from '../constants';
 
-export const ChosenLetters = ({ chosenLetters, wordIsValid, confirmWord }) => {
+import { getTilesStoreInstance } from '../stores';
+
+export const ChosenLetters = observer(() => {
+  const tilesStore = getTilesStoreInstance();
+
   const lastChosenLetters = useRef('');
   const animatedTranslateY = useRef(new Animated.Value(0)).current
 
@@ -28,18 +34,18 @@ export const ChosenLetters = ({ chosenLetters, wordIsValid, confirmWord }) => {
   
   // calculate score
   useLayoutEffect(() => {
-    if (wordIsValid) {
-      const score = getScoreForWord(chosenLetters);
+    if (tilesStore.wordIsValid) {
+      const score = getScoreForWord(tilesStore.chosenLetters);
       setScore(`(${score})poiu`);
     } else {
       setScore('');
     }
-  }, [chosenLetters])
+  }, [tilesStore.chosenLetters])
   
   // add animation
   useEffect(() => {
     // move in
-    if (!lastChosenLetters.current && chosenLetters) {
+    if (!lastChosenLetters.current && tilesStore.chosenLetters) {
       Animated.timing(
         animatedTranslateY,
         {
@@ -51,7 +57,7 @@ export const ChosenLetters = ({ chosenLetters, wordIsValid, confirmWord }) => {
     }
 
     // move out
-    if (lastChosenLetters.current && !chosenLetters) {
+    if (lastChosenLetters.current && !tilesStore.chosenLetters) {
       Animated.timing(
         animatedTranslateY,
         {
@@ -62,8 +68,8 @@ export const ChosenLetters = ({ chosenLetters, wordIsValid, confirmWord }) => {
       ).start();
     }
 
-    lastChosenLetters.current = chosenLetters;
-  }, [chosenLetters])
+    lastChosenLetters.current = tilesStore.chosenLetters;
+  }, [tilesStore.chosenLetters])
   
   return (
     <Animated.View
@@ -79,20 +85,20 @@ export const ChosenLetters = ({ chosenLetters, wordIsValid, confirmWord }) => {
       ]}
     >
       <TouchableOpacity
-        onPress={() => {if (wordIsValid) {confirmWord()}}}
+        onPress={() => {if (tilesStore.wordIsValid) {tilesStore.confirmWord()}}}
       >
         <Text
           style={[
             styles.chosenLetters,
-            wordIsValid ? styles.wordIsValid : {}
+            tilesStore.wordIsValid ? styles.wordIsValid : {}
           ]}
         >
-          {chosenLetters + score}
+          {tilesStore.chosenLetters + score}
         </Text>
       </TouchableOpacity>
     </Animated.View>
   )
-}
+});
 
 const styles = StyleSheet.create({
   wordBoard: {

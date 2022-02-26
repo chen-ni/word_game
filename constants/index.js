@@ -2,8 +2,8 @@ import {
   Dimensions,
 } from 'react-native';
 
-export const WINDOW_WIDTH = Dimensions.get('window').width;
-export const WINDOW_HEIGHT = Dimensions.get('window').height;
+export const WINDOW_WIDTH = Dimensions.get('screen').width;
+export const WINDOW_HEIGHT = Dimensions.get('screen').height;
 export const NUM_OF_COLUMNS = 9;
 // export const NUM_OF_COLUMNS = 2;
 export const NUM_OF_ROWS = 13;

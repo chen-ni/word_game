@@ -2,34 +2,42 @@ import {
   StyleSheet,
   Animated
 } from 'react-native';
+import { observer } from "mobx-react-lite"
 
 import {
   TILE_SIZE
 } from '../constants'
 
-export const Tiles = ({ tiles, handleTapTile }) => 
-  <>
-    {
-      tiles.map(col => 
-        col.map(tile => 
-          <Animated.Text
-            key={tile.key}
-            style={[
-              styles.tile,
-              tile.chosen ? styles.chosen : {},
-              {
-                left: tile.animatedPositionX,
-                bottom: tile.animatedPositionY,
-              }
-            ]}
-            onPress={() => handleTapTile(tile)}
-          >
-            {tile.letter}
-          </Animated.Text>
+import { getTilesStoreInstance } from '../stores';
+
+export const Tiles = observer(() => {
+  const tilesStore = getTilesStoreInstance();
+
+  return (
+    <>
+      {
+        tilesStore.tiles.map(col => 
+          col.map(tile => 
+            <Animated.Text
+              key={tile.key}
+              style={[
+                styles.tile,
+                tile.chosen ? styles.chosen : {},
+                {
+                  left: tile.animatedPositionX,
+                  bottom: tile.animatedPositionY,
+                }
+              ]}
+              onPress={() => tilesStore.handleTapTile(tile)}
+            >
+              {tile.letter}
+            </Animated.Text>
+          )
         )
-      )
-    }
-  </>
+      }
+    </>
+  )
+})
 
 const styles = StyleSheet.create({
   tile: {
