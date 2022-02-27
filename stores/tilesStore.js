@@ -63,8 +63,8 @@ class TilesStore {
     }
 
     tile.chosen = true
-    this.chosenTiles.replace([...this.chosenTiles, tile]);
     triggerTapSound(this.chosenTiles.length);
+    this.chosenTiles.replace([...this.chosenTiles, tile]);
   }
 
   confirmWord() {
