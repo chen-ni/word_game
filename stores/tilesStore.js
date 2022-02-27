@@ -89,7 +89,6 @@ class TilesStore {
     }
 
     tile.chosen = true
-    console.log("chosen", tile.chosen);
     this.chosenTiles.replace([...this.chosenTiles, tile]);
     this.tiles.replace([...this.tiles]);
     triggerTapSound(this.chosenTiles.length);
