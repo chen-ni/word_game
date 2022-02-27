@@ -1,4 +1,5 @@
-import { NUM_OF_COLUMNS, NUM_OF_ROWS, TILE_SIZE } from '../constants';
+import { NUM_OF_COLUMNS, NUM_OF_ROWS } from '../constants';
+import { Tile } from '../models';
 
 const getRandomLetterWithFrequency = () => {
   // adapted from https://gist.github.com/furf/2413792
@@ -23,29 +24,13 @@ const getRandomLetterWithFrequency = () => {
   }
 }
 
-const getId = () => Math.random().toString(16)
-
 export function generateTiles() {
   result = []
   for (let i=0; i<NUM_OF_COLUMNS; i++) {
     col = []
     for (let j=0; j<NUM_OF_ROWS; j++) {
       col.push(
-        {
-          letter: getRandomLetterWithFrequency(),
-          key: getId(),
-          chosen: false,
-          colIndex: i,
-          rowIndex: j,
-          get positionX() {
-            return this.colIndex * TILE_SIZE;
-          },
-          get positionY() {
-            return this.rowIndex * TILE_SIZE;
-          },
-          animatedPositionX: undefined,
-          animatedPositionY: undefined,
-        }
+        new Tile(i, j, getRandomLetterWithFrequency())
       )
     }
     result.push(col)

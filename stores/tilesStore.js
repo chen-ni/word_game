@@ -52,6 +52,8 @@ class TilesStore {
         tile.chosen = false
       })
     })
+
+    this.tiles.replace([...this.tiles]);
   }
 
   truncateChosen(tile) {
@@ -74,6 +76,8 @@ class TilesStore {
 
     this.chosenTiles = this.chosenTiles.slice(0, truncatedIndex + 1);
     triggerTapSound(this.chosenTiles.length);
+    
+    this.tiles.replace([...this.tiles]);
   }
 
   handleTapTile(tile) {
@@ -85,7 +89,9 @@ class TilesStore {
     }
 
     tile.chosen = true
+    console.log("chosen", tile.chosen);
     this.chosenTiles.replace([...this.chosenTiles, tile]);
+    this.tiles.replace([...this.tiles]);
     triggerTapSound(this.chosenTiles.length);
   }
 
