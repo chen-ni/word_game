@@ -13,6 +13,7 @@ import {
 } from '../constants'
 
 import { getTilesStoreInstance } from '../stores';
+import { getTouchedTile } from "../utils/getTouchedTile";
 
 export const TileInteractionLayer = observer(() => {
   const tilesStore = getTilesStoreInstance();
@@ -26,18 +27,9 @@ export const TileInteractionLayer = observer(() => {
       const x = x0 + dx;
       const y = y0 + dy;
 
-      const colIndex = Math.floor(x / TILE_SIZE);
-      const rowIndex = Math.floor((WINDOW_HEIGHT - y) / TILE_SIZE);
+      const tile = getTouchedTile(x, y, tilesStore.tiles);
 
-      let tile;
-      try {
-        tile = tilesStore.tiles[colIndex][rowIndex];
-      } catch (e) {
-
-        return;
-      }
-
-      if (!tile.chosen) {
+      if (tile && !tile.chosen) {
         tilesStore.handleTapTile(tile);
       }
     },
@@ -47,24 +39,19 @@ export const TileInteractionLayer = observer(() => {
       const x = x0 + dx;
       const y = y0 + dy;
 
-      const colIndex = Math.floor(x / TILE_SIZE);
-      const rowIndex = Math.floor((WINDOW_HEIGHT - y) / TILE_SIZE);
+      const tile = getTouchedTile(x, y, tilesStore.tiles);
 
-      let tile;
-      try {
-        tile = tilesStore.tiles[colIndex][rowIndex];
-      } catch (e) {
-
-        return;
-      }
-
-      if (!tile.chosen) {
+      if (tile && !tile.chosen) {
         tilesStore.handleTapTile(tile);
       }
     },
-    // onPanResponderRelease: () => {
-    //   setColor('blue')
-    // }
+    onPanResponderRelease: () => {
+      if (tilesStore.wordIsValid) {
+        tilesStore.confirmWord();
+      } else {
+        tilesStore.clearChosen();
+      }
+    }
   });
 
   return (
