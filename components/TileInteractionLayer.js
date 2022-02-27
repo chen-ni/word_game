@@ -41,8 +41,14 @@ export const TileInteractionLayer = observer(() => {
 
       const tile = getTouchedTile(x, y, tilesStore.tiles);
 
-      if (tile && !tile.chosen) {
+      if (!tile) {
+        return;
+      }
+
+      if (!tile.chosen) {
         tilesStore.handleTapTile(tile);
+      } else {
+        tilesStore.truncateChosen(tile);
       }
     },
     onPanResponderRelease: () => {

@@ -44,7 +44,7 @@ class TilesStore {
     return checkWord(this.chosenLetters);
   } 
 
-  clearChosen () {
+  clearChosen() {
     this.chosenTiles.replace([]);
 
     this.tiles.forEach(column => {
@@ -52,6 +52,28 @@ class TilesStore {
         tile.chosen = false
       })
     })
+  }
+
+  truncateChosen(tile) {
+    let truncatedIndex = -1;
+
+    for (let i=this.chosenTiles.length-1; i>=0; i--) {
+      const chosenTile = this.chosenTiles[i];
+      if (chosenTile.key === tile.key) {
+        truncatedIndex = i;
+      }
+    }
+
+    if (truncatedIndex < 0 || truncatedIndex === this.chosenTiles.length-1) {
+      return;
+    }
+
+    this.chosenTiles.slice(truncatedIndex + 1).forEach(tile => {
+      tile.chosen = false;
+    })
+
+    this.chosenTiles = this.chosenTiles.slice(0, truncatedIndex + 1);
+    triggerTapSound(this.chosenTiles.length);
   }
 
   handleTapTile(tile) {
@@ -63,8 +85,8 @@ class TilesStore {
     }
 
     tile.chosen = true
-    triggerTapSound(this.chosenTiles.length);
     this.chosenTiles.replace([...this.chosenTiles, tile]);
+    triggerTapSound(this.chosenTiles.length);
   }
 
   confirmWord() {
