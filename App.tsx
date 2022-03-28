@@ -1,10 +1,6 @@
-import { useState, useEffect, useRef } from 'react';
-import { StatusBar } from 'expo-status-bar';
+import React, { useEffect } from 'react';
 import {
-  StyleSheet,
-  View,
-  SafeAreaView,
-  Text,
+  StyleSheet, View, SafeAreaView, Text,
 } from 'react-native';
 
 import {
@@ -16,9 +12,7 @@ import {
 
 import { initializeSounds } from './utils';
 
-import {
-  GAME_BACKGROUND_COLOR, TILE_SIZE,
-} from './constants';
+import { GAME_BACKGROUND_COLOR, TILE_SIZE } from './constants';
 
 import { getTilesStoreInstance } from './stores';
 
@@ -37,18 +31,13 @@ export default function App() {
       <View style={styles.header}>
         <ChosenLettersView />
       </View>
-      {
-        !tilesStore.chosenLetters && (
-          <View>
-            <Text
-              style={styles.shuffleButton}
-              onPress={tilesStore.shuffle}
-            >
-              shuffle
-            </Text>
-          </View>
-        )
-      }
+      {!tilesStore.chosenLetters && (
+        <View>
+          <Text style={styles.shuffleButton} onPress={tilesStore.shuffle}>
+            shuffle
+          </Text>
+        </View>
+      )}
       <TileMatrixView />
       <ChosenTileConnectionsView />
       <TileInteractionLayerView />

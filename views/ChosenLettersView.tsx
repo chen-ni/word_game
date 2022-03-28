@@ -1,4 +1,4 @@
-import {
+import React, {
   useRef,
   useState,
   useEffect,
@@ -12,7 +12,6 @@ import {
 } from 'react-native';
 
 import { observer } from "mobx-react-lite"
-import { observable } from 'mobx';
 
 import {
   getScoreForWord
@@ -28,7 +27,7 @@ import { getTilesStoreInstance } from '../stores';
 export const ChosenLettersView = observer(() => {
   const tilesStore = getTilesStoreInstance();
 
-  const lastChosenLetters = useRef(observable(''));
+  const lastChosenLetters = useRef('');
   const animatedTranslateY = useRef(new Animated.Value(0)).current
 
   const [score, setScore] = useState('');
