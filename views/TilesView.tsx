@@ -24,8 +24,8 @@ export const TilesView = observer(() => {
                 styles.tile,
                 tile.chosen ? styles.chosen : {},
                 {
-                  left: tile.animatedPositionX,
-                  bottom: tile.animatedPositionY,
+                  left: tile.animatedPositionX || tile.positionX,
+                  bottom: tile.animatedPositionY || tile.positionY,
                 }
               ]}
               onPress={() => tilesStore.handleTapTile(tile)}

@@ -15,7 +15,6 @@ import { TILE_ANIMATION_TYPES } from '../constants';
 class TilesStore {
   tiles = observable([]);
   chosenTiles = observable([]);
-  chosenLetters = observable('');
 
   constructor() {
     makeAutoObservable(this, {

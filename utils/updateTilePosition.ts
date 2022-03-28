@@ -1,10 +1,11 @@
 import { Animated } from 'react-native';
 
+import { Tiles } from '../models';
 import { getFallDownTime } from './getFallDownTime';
 import { TILE_ANIMATION_TYPES, SHUFFLE_TIME } from '../constants';
-import { tileCrashSound } from './sounds';
+import { triggerTileCrashSound } from './sounds';
 
-export function updateTilePositions(tiles, animationType) {
+export function updateTilePositions(tiles: Tiles, animationType) {
   tiles.forEach((col, colIndex) => 
   col.forEach((tile, rowIndex) => {
       const oldPositionX = tile.positionX;
@@ -13,8 +14,8 @@ export function updateTilePositions(tiles, animationType) {
       tile.rowIndex = rowIndex;
       tile.colIndex = colIndex;
 
-      tile.animatedPositionX = tile.positionX;
-      tile.animatedPositionY = tile.positionY;
+      tile.animatedPositionX = null;
+      tile.animatedPositionY = null;
 
       if (animationType === TILE_ANIMATION_TYPES.FALL_DOWN) {
         if (oldPositionY !== tile.positionY) {
@@ -29,7 +30,7 @@ export function updateTilePositions(tiles, animationType) {
           ).start(
             // callback when animation is done
             () => {
-              tileCrashSound.replayAsync();
+              triggerTileCrashSound();
             }
           );
         }

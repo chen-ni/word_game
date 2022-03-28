@@ -1,3 +1,4 @@
+import { Animated } from 'react-native';
 import { TILE_SIZE } from '../constants';
 
 export class Tile {
@@ -6,8 +7,8 @@ export class Tile {
   chosen: boolean;
   colIndex: number;
   rowIndex: number;
-  animatedPositionX: number = undefined;
-  animatedPositionY: number = undefined;
+  animatedPositionX: Animated.Value;
+  animatedPositionY: Animated.Value;
 
   constructor(colIndex: number, rowIndex: number, letter: string) {
     this.key = Math.random().toString(16);

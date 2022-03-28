@@ -1,14 +1,13 @@
-import {
-  updateTilePositions
-} from './updateTilePosition'
+import { Tile, Tiles } from '../models';
+import { updateTilePositions } from './updateTilePosition';
 
 import {
   NUM_OF_COLUMNS, TILE_ANIMATION_TYPES
 } from '../constants'
 
-export function shuffleTiles(oldTiles) {
+export function shuffleTiles(oldTiles: Tiles): Tiles {
   // convert from 2D to 1D
-  flattenedTileArray = [];
+  let flattenedTileArray: Tile[] = [];
   oldTiles.forEach(col => {
     flattenedTileArray = flattenedTileArray.concat(col);
   });
@@ -17,7 +16,7 @@ export function shuffleTiles(oldTiles) {
   flattenedTileArray = shuffle(flattenedTileArray);
 
   // convert from 1D to 2D
-  const newTiles = [];
+  const newTiles: Tiles = [];
   for (let i=0; i<NUM_OF_COLUMNS; i++) {
     newTiles.push([]);
   }
@@ -33,7 +32,7 @@ export function shuffleTiles(oldTiles) {
 }
 
 // copied from: https://stackoverflow.com/a/2450976/7438905
-function shuffle(array) {
+function shuffle(array: Tile[]): Tile[] {
   let currentIndex = array.length,  randomIndex;
 
   // While there remain elements to shuffle...
