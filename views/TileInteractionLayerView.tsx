@@ -8,14 +8,13 @@ import {
 import {
   TILE_SIZE,
   NUM_OF_COLUMNS,
-  NUM_OF_ROWS,
-  WINDOW_HEIGHT
+  NUM_OF_ROWS
 } from '../constants'
 
 import { getTilesStoreInstance } from '../stores';
 import { getTouchedTile } from "../utils/getTouchedTile";
 
-export const TileInteractionLayer = observer(() => {
+export const TileInteractionLayerView = observer(() => {
   const tilesStore = getTilesStoreInstance();
 
   const panResponder = PanResponder.create({

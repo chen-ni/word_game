@@ -12,7 +12,7 @@ import { observer } from "mobx-react-lite"
 
 import { getTilesStoreInstance } from '../stores';
 
-export const ChosenTileConnections = observer(() => {
+export const ChosenTileConnectionsView = observer(() => {
   const tilesStore = getTilesStoreInstance();
 
   const connections = [];
@@ -24,7 +24,7 @@ export const ChosenTileConnections = observer(() => {
     let connectionLength;
     let startPositionX;
     let startPositionY;
-    let rotate = 0;
+    let rotate: string;
     let translateY = 0;
     let translateX = 0;
 

@@ -8,11 +8,11 @@ import {
 } from 'react-native';
 
 import {
-  ChosenLetters,
-  ChosenTileConnections,
-  Tiles,
-  TileInteractionLayer
-} from './components';
+  ChosenLettersView,
+  ChosenTileConnectionsView,
+  TilesView,
+  TileInteractionLayerView
+} from './views';
 
 import { initializeSounds } from './utils';
 
@@ -35,7 +35,7 @@ export default function App() {
     <SafeAreaView style={styles.container}>
       {/* <StatusBar style="auto" /> */}
       <View style={styles.header}>
-        <ChosenLetters />
+        <ChosenLettersView />
       </View>
       {
         !tilesStore.chosenLetters && (
@@ -49,9 +49,9 @@ export default function App() {
           </View>
         )
       }
-      <Tiles />
-      <ChosenTileConnections />
-      <TileInteractionLayer />
+      <TilesView />
+      <ChosenTileConnectionsView />
+      <TileInteractionLayerView />
     </SafeAreaView>
   );
 }

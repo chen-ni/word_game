@@ -10,7 +10,7 @@ import {
 
 import { getTilesStoreInstance } from '../stores';
 
-export const Tiles = observer(() => {
+export const TilesView = observer(() => {
   const tilesStore = getTilesStoreInstance();
 
   return (
@@ -45,7 +45,6 @@ const styles = StyleSheet.create({
     width: TILE_SIZE,
     height: TILE_SIZE,
     backgroundColor: '#fce5c0',
-    textAlign: 'center',
     position: 'absolute',
     fontWeight: '200',
     color: 'black',

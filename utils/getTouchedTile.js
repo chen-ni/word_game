@@ -4,11 +4,11 @@ export function getTouchedTile(x, y, tiles) {
   const colIndex = Math.floor(x / TILE_SIZE);
   const rowIndex = Math.floor((WINDOW_HEIGHT - y) / TILE_SIZE);
 
-  if (x < colIndex * TILE_SIZE + 0.15 * TILE_SIZE || x > colIndex * TILE_SIZE + 0.85 * TILE_SIZE) {
+  if (x < colIndex * TILE_SIZE + 0.2 * TILE_SIZE || x > colIndex * TILE_SIZE + 0.8 * TILE_SIZE) {
     return null;
   }
 
-  if ((WINDOW_HEIGHT - y) < rowIndex * TILE_SIZE + 0.15 * TILE_SIZE || (WINDOW_HEIGHT - y) > rowIndex * TILE_SIZE + 0.85 * TILE_SIZE) {
+  if ((WINDOW_HEIGHT - y) < rowIndex * TILE_SIZE + 0.2 * TILE_SIZE || (WINDOW_HEIGHT - y) > rowIndex * TILE_SIZE + 0.8 * TILE_SIZE) {
     return null;
   }
 
