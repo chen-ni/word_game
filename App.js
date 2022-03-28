@@ -10,7 +10,7 @@ import {
 import {
   ChosenLettersView,
   ChosenTileConnectionsView,
-  TilesView,
+  TileMatrixView,
   TileInteractionLayerView
 } from './views';
 
@@ -49,7 +49,7 @@ export default function App() {
           </View>
         )
       }
-      <TilesView />
+      <TileMatrixView />
       <ChosenTileConnectionsView />
       <TileInteractionLayerView />
     </SafeAreaView>

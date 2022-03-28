@@ -1,4 +1,6 @@
-export function isValidTap(tile, lastTile) {
+import { Tile } from '../models';
+
+export function isValidTap(tile: Tile, lastTile: Tile): boolean {
   if (tile.chosen) {
     return false;
   }
@@ -8,8 +10,8 @@ export function isValidTap(tile, lastTile) {
 
   if ((Math.abs(colIndex - lastColIndex) > 1)
     || (Math.abs(rowIndex - lastRowIndex) > 1)){
-    return false
+    return false;
   }
 
-  return true
+  return true;
 }

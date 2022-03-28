@@ -1,6 +1,7 @@
+import { Tile, TileMatrix } from "../models";
 import { TILE_SIZE, WINDOW_HEIGHT } from "../constants";
 
-export function getTouchedTile(x, y, tiles) {
+export function getTouchedTile(x: number, y: number, tileMatrix: TileMatrix): Tile {
   const colIndex = Math.floor(x / TILE_SIZE);
   const rowIndex = Math.floor((WINDOW_HEIGHT - y) / TILE_SIZE);
 
@@ -12,7 +13,7 @@ export function getTouchedTile(x, y, tiles) {
     return null;
   }
 
-  const column = tiles[colIndex];
+  const column = tileMatrix[colIndex];
   
   if (rowIndex > column.length - 1) {
     return null;

@@ -1,5 +1,5 @@
 // scores taken from: https://en.wikipedia.org/wiki/Scrabble_letter_distributions
-const letterToScore = [
+const letterToScoreArray = [
   {
     value: 1,
     letters: ['a', 'e', 'i', 'o', 'u', 'l', 'n', 's', 't', 'r']
@@ -30,9 +30,9 @@ const letterToScore = [
   }
 ]
 
-export function getScoreForLetter(letter) {
+export function getScoreForLetter(letter: string): number {
   letter = letter.toLowerCase();
-  for ({ value, letters } of letterToScore) {
+  for (const { value, letters } of letterToScoreArray) {
     if (letters.includes(letter)) {
       return value;
     }
@@ -41,7 +41,8 @@ export function getScoreForLetter(letter) {
   return 0;
 }
 
-export function getScoreForWord(word) {
+// add up the scores for each letter in the word
+export function getScoreForWord(word: string): number {
   return word
     .split('')
     .map(letter => getScoreForLetter(letter))

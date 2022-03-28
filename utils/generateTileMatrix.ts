@@ -1,7 +1,7 @@
 import { NUM_OF_COLUMNS, NUM_OF_ROWS } from '../constants';
 import { Tile, TileMatrix } from '../models';
 
-const getRandomLetterWithFrequency = () => {
+function getRandomLetterWithFrequency(): string {
   // adapted from https://gist.github.com/furf/2413792
   const lookup = {
     // Ranges calculated from data found at

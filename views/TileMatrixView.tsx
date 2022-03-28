@@ -10,7 +10,7 @@ import {
 
 import { getTilesStoreInstance } from '../stores';
 
-export const TilesView = observer(() => {
+export const TileMatrixView = observer(() => {
   const tilesStore = getTilesStoreInstance();
 
   return (

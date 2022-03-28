@@ -3,30 +3,30 @@ import { updateTilePositions } from './updateTilePosition';
 
 import { NUM_OF_COLUMNS } from '../constants'
 
-export function shuffleTiles(oldTiles: TileMatrix): TileMatrix {
+export function shuffleTiles(oldTileMatrix: TileMatrix): TileMatrix {
   // convert from 2D to 1D
-  let flattenedTileArray: Tile[] = [];
-  oldTiles.forEach(col => {
-    flattenedTileArray = flattenedTileArray.concat(col);
+  let tileArray: Tile[] = [];
+  oldTileMatrix.forEach(col => {
+    tileArray = tileArray.concat(col);
   });
 
   // shuffle the 1D array
-  flattenedTileArray = shuffle(flattenedTileArray);
+  tileArray = shuffle(tileArray);
 
   // convert from 1D to 2D
-  const newTiles: TileMatrix = [];
+  const newTileMatrix: TileMatrix = [];
   for (let i=0; i<NUM_OF_COLUMNS; i++) {
-    newTiles.push([]);
+    newTileMatrix.push([]);
   }
   let curColIndex = 0;
-  while (flattenedTileArray.length > 0) {
-    const tile = flattenedTileArray.shift();
-    newTiles[curColIndex].push(tile);
+  while (tileArray.length > 0) {
+    const tile = tileArray.shift();
+    newTileMatrix[curColIndex].push(tile);
     curColIndex = (curColIndex + 1) % NUM_OF_COLUMNS;
   }
 
-  updateTilePositions(newTiles, TileAnimationType.SHUFFLE);
-  return newTiles;
+  updateTilePositions(newTileMatrix, TileAnimationType.SHUFFLE);
+  return newTileMatrix;
 }
 
 // copied from: https://stackoverflow.com/a/2450976/7438905
