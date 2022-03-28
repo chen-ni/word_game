@@ -4,21 +4,21 @@ import {
   StyleSheet,
   View,
   SafeAreaView,
-  Text
+  Text,
 } from 'react-native';
 
 import {
   ChosenLettersView,
   ChosenTileConnectionsView,
   TileMatrixView,
-  TileInteractionLayerView
+  TileInteractionLayerView,
 } from './views';
 
 import { initializeSounds } from './utils';
 
 import {
-  GAME_BACKGROUND_COLOR, TILE_SIZE
-} from './constants'
+  GAME_BACKGROUND_COLOR, TILE_SIZE,
+} from './constants';
 
 import { getTilesStoreInstance } from './stores';
 
@@ -29,7 +29,7 @@ export default function App() {
   useEffect(() => {
     // sounds
     initializeSounds();
-  }, [])
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     height: 200,
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   shuffleButton: {
     position: 'absolute',
@@ -78,5 +78,5 @@ const styles = StyleSheet.create({
     height: TILE_SIZE,
     backgroundColor: 'white',
     color: 'black',
-  }
+  },
 });
