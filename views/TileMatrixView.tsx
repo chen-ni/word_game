@@ -4,9 +4,7 @@ import {
 } from 'react-native';
 import { observer } from "mobx-react-lite"
 
-import {
-  TILE_SIZE
-} from '../constants'
+import { TILE_SIZE } from '../constants'
 
 import { getTilesStoreInstance } from '../stores';
 
