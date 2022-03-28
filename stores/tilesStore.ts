@@ -1,7 +1,7 @@
 import { action, computed, makeAutoObservable, observable } from 'mobx';
 import {
   updateTilePositions,
-  generateTiles,
+  generateTileMatrix,
   isValidTap,
   checkWord,
   removeChosenTiles,
@@ -9,10 +9,10 @@ import {
   shuffleTiles
 } from '../utils';
 
-import { TileAnimationType, Tile, Tiles } from '../models';
+import { TileAnimationType, Tile, TileMatrix } from '../models';
 
 class TilesStore {
-  tiles: Tiles = [];
+  tiles: TileMatrix = [];
   chosenTiles: Tile[] = [];
 
   constructor() {
@@ -26,7 +26,7 @@ class TilesStore {
       shuffle: action.bound
     })
 
-    const tiles: Tiles = generateTiles();
+    const tiles: TileMatrix = generateTileMatrix();
     updateTilePositions(tiles, TileAnimationType.NONE);
 
     this.tiles = tiles;

@@ -1,5 +1,5 @@
 import { NUM_OF_COLUMNS, NUM_OF_ROWS } from '../constants';
-import { Tile, Tiles } from '../models';
+import { Tile, TileMatrix } from '../models';
 
 const getRandomLetterWithFrequency = () => {
   // adapted from https://gist.github.com/furf/2413792
@@ -24,7 +24,7 @@ const getRandomLetterWithFrequency = () => {
   }
 }
 
-export function generateTiles(): Tiles {
+export function generateTileMatrix(): TileMatrix {
   const result = []
   for (let i=0; i<NUM_OF_COLUMNS; i++) {
     const col = []

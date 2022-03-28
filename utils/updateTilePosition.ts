@@ -1,11 +1,11 @@
 import { Animated } from 'react-native';
 
-import { TileAnimationType, Tiles } from '../models';
+import { TileAnimationType, TileMatrix } from '../models';
 import { getFallDownTime } from './getFallDownTime';
 import { SHUFFLE_TIME } from '../constants';
 import { triggerTileCrashSound } from './sounds';
 
-export function updateTilePositions(tiles: Tiles, animationType: TileAnimationType) {
+export function updateTilePositions(tiles: TileMatrix, animationType: TileAnimationType) {
   tiles.forEach((col, colIndex) => 
   col.forEach((tile, rowIndex) => {
       const oldPositionX = tile.positionX;

@@ -1,6 +1,6 @@
 export * from './checkTap';
 export * from './checkWord';
-export * from './generateTiles';
+export * from './generateTileMatrix';
 export * from './getFallDownTime';
 export * from './removeChosenTiles';
 export * from './score';

@@ -1,9 +1,9 @@
-import { Tile, Tiles, TileAnimationType } from '../models';
+import { Tile, TileMatrix, TileAnimationType } from '../models';
 import { updateTilePositions } from './updateTilePosition';
 
 import { NUM_OF_COLUMNS } from '../constants'
 
-export function shuffleTiles(oldTiles: Tiles): Tiles {
+export function shuffleTiles(oldTiles: TileMatrix): TileMatrix {
   // convert from 2D to 1D
   let flattenedTileArray: Tile[] = [];
   oldTiles.forEach(col => {
@@ -14,7 +14,7 @@ export function shuffleTiles(oldTiles: Tiles): Tiles {
   flattenedTileArray = shuffle(flattenedTileArray);
 
   // convert from 1D to 2D
-  const newTiles: Tiles = [];
+  const newTiles: TileMatrix = [];
   for (let i=0; i<NUM_OF_COLUMNS; i++) {
     newTiles.push([]);
   }
