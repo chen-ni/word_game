@@ -1,9 +1,7 @@
-import { Tile, Tiles } from '../models';
+import { Tile, Tiles, TileAnimationType } from '../models';
 import { updateTilePositions } from './updateTilePosition';
 
-import {
-  NUM_OF_COLUMNS, TILE_ANIMATION_TYPES
-} from '../constants'
+import { NUM_OF_COLUMNS } from '../constants'
 
 export function shuffleTiles(oldTiles: Tiles): Tiles {
   // convert from 2D to 1D
@@ -27,7 +25,7 @@ export function shuffleTiles(oldTiles: Tiles): Tiles {
     curColIndex = (curColIndex + 1) % NUM_OF_COLUMNS;
   }
 
-  updateTilePositions(newTiles, TILE_ANIMATION_TYPES.SHUFFLE);
+  updateTilePositions(newTiles, TileAnimationType.SHUFFLE);
   return newTiles;
 }
 

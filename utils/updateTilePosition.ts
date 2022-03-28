@@ -1,11 +1,11 @@
 import { Animated } from 'react-native';
 
-import { Tiles } from '../models';
+import { TileAnimationType, Tiles } from '../models';
 import { getFallDownTime } from './getFallDownTime';
-import { TILE_ANIMATION_TYPES, SHUFFLE_TIME } from '../constants';
+import { SHUFFLE_TIME } from '../constants';
 import { triggerTileCrashSound } from './sounds';
 
-export function updateTilePositions(tiles: Tiles, animationType) {
+export function updateTilePositions(tiles: Tiles, animationType: TileAnimationType) {
   tiles.forEach((col, colIndex) => 
   col.forEach((tile, rowIndex) => {
       const oldPositionX = tile.positionX;
@@ -17,7 +17,7 @@ export function updateTilePositions(tiles: Tiles, animationType) {
       tile.animatedPositionX = null;
       tile.animatedPositionY = null;
 
-      if (animationType === TILE_ANIMATION_TYPES.FALL_DOWN) {
+      if (animationType === TileAnimationType.FALL_DOWN) {
         if (oldPositionY !== tile.positionY) {
           tile.animatedPositionY = new Animated.Value(oldPositionY);
           Animated.timing(
@@ -34,9 +34,7 @@ export function updateTilePositions(tiles: Tiles, animationType) {
             }
           );
         }
-      }
-
-      if (animationType === TILE_ANIMATION_TYPES.SHUFFLE) {
+      } else if (animationType === TileAnimationType.SHUFFLE) {
         if (oldPositionX !== tile.positionX) {
           tile.animatedPositionX = new Animated.Value(oldPositionX);
           Animated.timing(

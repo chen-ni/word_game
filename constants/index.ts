@@ -17,11 +17,5 @@ export const CONNECTION_HEIGHT = TILE_SIZE * 0.7;
 // shuffling
 export const SHUFFLE_TIME = 1500; // 1.5s
 
-// tile animation types
-export const TILE_ANIMATION_TYPES = {
-  FALL_DOWN: 1,
-  SHUFFLE: 2
-}
-
 // styles
 export const GAME_BACKGROUND_COLOR = '#e0b35f';

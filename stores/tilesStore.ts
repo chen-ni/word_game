@@ -9,12 +9,11 @@ import {
   shuffleTiles
 } from '../utils';
 
-import { TILE_ANIMATION_TYPES } from '../constants';
-
+import { TileAnimationType, Tile, Tiles } from '../models';
 
 class TilesStore {
-  tiles = observable([]);
-  chosenTiles = observable([]);
+  tiles: Tiles = [];
+  chosenTiles: Tile[] = [];
 
   constructor() {
     makeAutoObservable(this, {
@@ -27,10 +26,10 @@ class TilesStore {
       shuffle: action.bound
     })
 
-    const tiles = generateTiles();
-    updateTilePositions(tiles);
+    const tiles: Tiles = generateTiles();
+    updateTilePositions(tiles, TileAnimationType.NONE);
 
-    this.tiles.replace(tiles);
+    this.tiles = tiles;
   }
 
   get chosenLetters() {
@@ -39,12 +38,12 @@ class TilesStore {
       .reduce((a, b) => a + b, '');
   }
 
-  get wordIsValid() {
+  get wordIsValid(): boolean {
     return checkWord(this.chosenLetters);
   } 
 
-  clearChosen() {
-    this.chosenTiles.replace([]);
+  clearChosen(): void {
+    this.chosenTiles = [];
 
     this.tiles.forEach(column => {
       column.forEach(tile => {
@@ -52,10 +51,10 @@ class TilesStore {
       })
     })
 
-    this.tiles.replace([...this.tiles]);
+    this.tiles = [...this.tiles];
   }
 
-  truncateChosen(tile) {
+  truncateChosen(tile: Tile): void {
     let truncatedIndex = -1;
 
     for (let i=this.chosenTiles.length-1; i>=0; i--) {
@@ -76,7 +75,7 @@ class TilesStore {
     this.chosenTiles = this.chosenTiles.slice(0, truncatedIndex + 1);
     triggerTapSound(this.chosenTiles.length);
     
-    this.tiles.replace([...this.tiles]);
+    this.tiles = [...this.tiles];
   }
 
   handleTapTile(tile) {
@@ -88,22 +87,22 @@ class TilesStore {
     }
 
     tile.chosen = true
-    this.chosenTiles.replace([...this.chosenTiles, tile]);
-    this.tiles.replace([...this.tiles]);
+    this.chosenTiles = [...this.chosenTiles, tile];
+    this.tiles = [...this.tiles];
     triggerTapSound(this.chosenTiles.length);
   }
 
   confirmWord() {
     removeChosenTiles(this.tiles);
     this.clearChosen();
-    updateTilePositions(this.tiles, TILE_ANIMATION_TYPES.FALL_DOWN);
-    this.tiles.replace([...this.tiles])
+    updateTilePositions(this.tiles, TileAnimationType.FALL_DOWN);
+    this.tiles = [...this.tiles];
   }
 
   shuffle () {
     this.clearChosen();
     const shuffledTiles = shuffleTiles(this.tiles);
-    this.tiles.replace([...shuffledTiles]);
+    this.tiles = [...shuffledTiles];
   }
 }
 

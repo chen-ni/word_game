@@ -1,5 +1,5 @@
 import { NUM_OF_COLUMNS, NUM_OF_ROWS } from '../constants';
-import { Tile } from '../models';
+import { Tile, Tiles } from '../models';
 
 const getRandomLetterWithFrequency = () => {
   // adapted from https://gist.github.com/furf/2413792
@@ -17,17 +17,17 @@ const getRandomLetterWithFrequency = () => {
 
   const random = Math.random() * 100000;
 
-  for (letter in lookup) {
+  for (let letter in lookup) {
     if (random < lookup[letter]) {
       return letter.toUpperCase();
     }
   }
 }
 
-export function generateTiles() {
-  result = []
+export function generateTiles(): Tiles {
+  const result = []
   for (let i=0; i<NUM_OF_COLUMNS; i++) {
-    col = []
+    const col = []
     for (let j=0; j<NUM_OF_ROWS; j++) {
       col.push(
         new Tile(i, j, getRandomLetterWithFrequency())
