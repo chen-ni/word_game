@@ -12,11 +12,11 @@ import {
   NUM_OF_ROWS
 } from '../constants'
 
-import { getTilesStoreInstance } from '../stores';
+import { getTileStoreInstance } from '../stores';
 import { getTouchedTile } from "../utils/getTouchedTile";
 
 export const TileInteractionLayerView = observer(() => {
-  const tilesStore = getTilesStoreInstance();
+  const tileStore = getTileStoreInstance();
 
   const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: (evt, gestureState) => true,
@@ -27,10 +27,10 @@ export const TileInteractionLayerView = observer(() => {
       const x = x0 + dx;
       const y = y0 + dy;
 
-      const tile = getTouchedTile(x, y, tilesStore.tiles);
+      const tile = getTouchedTile(x, y, tileStore.tiles);
 
       if (tile && !tile.chosen) {
-        tilesStore.handleTapTile(tile);
+        tileStore.handleTapTile(tile);
       }
     },
     onPanResponderMove: (evt, gestureState) => {
@@ -39,23 +39,23 @@ export const TileInteractionLayerView = observer(() => {
       const x = x0 + dx;
       const y = y0 + dy;
 
-      const tile = getTouchedTile(x, y, tilesStore.tiles);
+      const tile = getTouchedTile(x, y, tileStore.tiles);
 
       if (!tile) {
         return;
       }
 
       if (!tile.chosen) {
-        tilesStore.handleTapTile(tile);
+        tileStore.handleTapTile(tile);
       } else {
-        tilesStore.truncateChosen(tile);
+        tileStore.truncateChosen(tile);
       }
     },
     onPanResponderRelease: () => {
-      if (tilesStore.wordIsValid) {
-        tilesStore.confirmWord();
+      if (tileStore.wordIsValid) {
+        tileStore.confirmWord();
       } else {
-        tilesStore.clearChosen();
+        tileStore.clearChosen();
       }
     }
   });

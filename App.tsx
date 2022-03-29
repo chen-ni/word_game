@@ -1,23 +1,24 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet, View, SafeAreaView, Text,
 } from 'react-native';
 
+import { GameState } from './models';
 import {
   ChosenLettersView,
   ChosenTileConnectionsView,
   TileMatrixView,
   TileInteractionLayerView,
 } from './views';
-
 import { initializeSounds } from './utils';
-
 import { GAME_BACKGROUND_COLOR, TILE_SIZE } from './constants';
-
-import { getTilesStoreInstance } from './stores';
+import { getTileStoreInstance } from './stores';
+import { MenuView } from './views';
 
 export default function App() {
-  const tilesStore = getTilesStoreInstance();
+  const [gameState, setGameState] = useState<GameState>(GameState.NORMAL);
+
+  const tileStore = getTileStoreInstance();
 
   // initialization
   useEffect(() => {
@@ -25,15 +26,33 @@ export default function App() {
     initializeSounds();
   }, []);
 
+  const showMenu = () => {
+    setGameState(GameState.MENU);
+  };
+
+  const resumeGame = () => {
+    setGameState(GameState.NORMAL);
+  };
+
+  const restartGame = () => {
+    tileStore.reset();
+    setGameState(GameState.NORMAL);
+  }
+
   return (
     <SafeAreaView style={styles.container}>
-      {/* <StatusBar style="auto" /> */}
       <View style={styles.header}>
         <ChosenLettersView />
       </View>
-      {!tilesStore.chosenLetters && (
+      <Text 
+        style={styles.menuButton}
+        onPress={showMenu}
+      >
+        MENU
+      </Text>
+      {!tileStore.chosenLetters && (
         <View>
-          <Text style={styles.shuffleButton} onPress={tilesStore.shuffle}>
+          <Text style={styles.shuffleButton} onPress={tileStore.shuffle}>
             shuffle
           </Text>
         </View>
@@ -41,6 +60,14 @@ export default function App() {
       <TileMatrixView />
       <ChosenTileConnectionsView />
       <TileInteractionLayerView />
+      {
+        gameState === GameState.MENU && (
+          <MenuView
+            onResume={resumeGame}
+            onRestart={restartGame}
+          />
+        )
+      }
     </SafeAreaView>
   );
 }
@@ -58,6 +85,15 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  menuButton: {
+    position: 'absolute',
+    top: 30,
+    left: 0,
+    width: TILE_SIZE,
+    height: TILE_SIZE,
+    backgroundColor: 'white',
+    color: 'black',
   },
   shuffleButton: {
     position: 'absolute',

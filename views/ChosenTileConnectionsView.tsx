@@ -11,17 +11,17 @@ import {
 
 import { observer } from "mobx-react-lite"
 
-import { getTilesStoreInstance } from '../stores';
+import { getTileStoreInstance } from '../stores';
 
 export const ChosenTileConnectionsView = observer(() => {
-  const tilesStore = getTilesStoreInstance();
+  const tileStore = getTileStoreInstance();
 
   const connections = [];
-  if (tilesStore.chosenTiles.length < 2) {
+  if (tileStore.chosenTiles.length < 2) {
     return <></>;
   }
 
-  tilesStore.chosenTiles.reduce((prevTile, curTile) => {
+  tileStore.chosenTiles.reduce((prevTile, curTile) => {
     let connectionLength;
     let startPositionX;
     let startPositionY;

@@ -22,10 +22,10 @@ import {
   WINDOW_WIDTH
 } from '../constants';
 
-import { getTilesStoreInstance } from '../stores';
+import { getTileStoreInstance } from '../stores';
 
 export const ChosenLettersView = observer(() => {
-  const tilesStore = getTilesStoreInstance();
+  const tileStore = getTileStoreInstance();
 
   const lastChosenLetters = useRef('');
   const animatedTranslateY = useRef(new Animated.Value(0)).current
@@ -34,18 +34,18 @@ export const ChosenLettersView = observer(() => {
   
   // calculate score
   useLayoutEffect(() => {
-    if (tilesStore.wordIsValid) {
-      const score = getScoreForWord(tilesStore.chosenLetters);
+    if (tileStore.wordIsValid) {
+      const score = getScoreForWord(tileStore.chosenLetters);
       setScore(`(${score})`);
     } else {
       setScore('');
     }
-  }, [tilesStore.chosenLetters])
+  }, [tileStore.chosenLetters])
   
   // add animation
   useEffect(() => {
     // move in
-    if (!lastChosenLetters.current && tilesStore.chosenLetters) {
+    if (!lastChosenLetters.current && tileStore.chosenLetters) {
       Animated.timing(
         animatedTranslateY,
         {
@@ -57,7 +57,7 @@ export const ChosenLettersView = observer(() => {
     }
 
     // move out
-    if (lastChosenLetters.current && !tilesStore.chosenLetters) {
+    if (lastChosenLetters.current && !tileStore.chosenLetters) {
       Animated.timing(
         animatedTranslateY,
         {
@@ -68,8 +68,8 @@ export const ChosenLettersView = observer(() => {
       ).start();
     }
 
-    lastChosenLetters.current = tilesStore.chosenLetters;
-  }, [tilesStore.chosenLetters])
+    lastChosenLetters.current = tileStore.chosenLetters;
+  }, [tileStore.chosenLetters])
   
   return (
     <Animated.View
@@ -85,16 +85,16 @@ export const ChosenLettersView = observer(() => {
       ]}
     >
       <TouchableOpacity
-        onPress={() => {if (tilesStore.wordIsValid) {tilesStore.confirmWord()}}}
+        onPress={() => {if (tileStore.wordIsValid) {tileStore.confirmWord()}}}
         style={styles.textContainer}
       >
         <Text
           style={[
             styles.text,
-            tilesStore.wordIsValid ? styles.wordIsValid : {}
+            tileStore.wordIsValid ? styles.wordIsValid : {}
           ]}
         >
-          {tilesStore.chosenLetters + score}
+          {tileStore.chosenLetters + score}
         </Text>
       </TouchableOpacity>
     </Animated.View>

@@ -11,7 +11,7 @@ import {
 
 import { TileAnimationType, Tile, TileMatrix } from '../models';
 
-class TilesStore {
+class TileStore {
   tiles: TileMatrix = [];
   chosenTiles: Tile[] = [];
 
@@ -24,8 +24,11 @@ class TilesStore {
       handleTapTile: action.bound,
       confirmWord: action.bound,
       shuffle: action.bound
-    })
+    });
+    this.reset();
+  }
 
+  reset(): void {
     const tiles: TileMatrix = generateTileMatrix();
     updateTilePositions(tiles, TileAnimationType.NONE);
 
@@ -106,8 +109,8 @@ class TilesStore {
   }
 }
 
-const tilesStore = new TilesStore();
+const tileStore = new TileStore();
 
-export function getTilesStoreInstance() {
-  return tilesStore;
+export function getTileStoreInstance() {
+  return tileStore;
 }
