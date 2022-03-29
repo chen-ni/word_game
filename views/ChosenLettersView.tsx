@@ -86,6 +86,7 @@ export const ChosenLettersView = observer(() => {
     >
       <TouchableOpacity
         onPress={() => {if (tilesStore.wordIsValid) {tilesStore.confirmWord()}}}
+        style={styles.textContainer}
       >
         <Text
           style={[
@@ -112,6 +113,9 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  textContainer: {
+    width: '100%',
   },
   text: {
     fontSize: CHOSEN_LETTERS_BOARD_HEIGHT * 0.3,
