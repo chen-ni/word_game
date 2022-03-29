@@ -36,7 +36,7 @@ export const ChosenLettersView = observer(() => {
   useLayoutEffect(() => {
     if (tilesStore.wordIsValid) {
       const score = getScoreForWord(tilesStore.chosenLetters);
-      setScore(`(${score})poiu`);
+      setScore(`(${score})`);
     } else {
       setScore('');
     }
@@ -89,7 +89,7 @@ export const ChosenLettersView = observer(() => {
       >
         <Text
           style={[
-            styles.chosenLetters,
+            styles.text,
             tilesStore.wordIsValid ? styles.wordIsValid : {}
           ]}
         >
@@ -109,12 +109,15 @@ const styles = StyleSheet.create({
     top: -1 * CHOSEN_LETTERS_BOARD_HEIGHT,
     left: 0,
     display: 'flex',
+    flexDirection: 'column',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
-  chosenLetters: {
+  text: {
     fontSize: CHOSEN_LETTERS_BOARD_HEIGHT * 0.3,
-    color: '#bf2d3a'
+    color: 'black',
+    textAlign: "center",
+    textAlignVertical: "center"
   },
   wordIsValid: {
     color: 'red'
