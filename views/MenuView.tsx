@@ -1,7 +1,6 @@
-import React, { FC, useRef, useEffect } from "react";
+import React, { FC, useRef, useEffect, useState } from "react";
 import { Animated } from "react-native";
 import { MenuState } from '../models';
-import { getMainStoreInstance } from "../stores";
 import { MENU_MOVE_IN_TIME, MENU_MOVE_OUT_TIME, WINDOW_HEIGHT } from "../constants";
 import { menuStyles as styles } from "../stylesheets";
 import { MainMenuView } from './MainMenuView';
@@ -13,8 +12,8 @@ interface MenuViewProps {
 }
 
 export const MenuView: FC<MenuViewProps> = (props) => {
-  const animatedTranslateY = useRef(new Animated.Value(WINDOW_HEIGHT)).current
-  const mainStore = getMainStoreInstance();
+  const [menuState, setMenuState] = useState<MenuState>(MenuState.MAIN_MENU);
+  const animatedTranslateY = useRef(new Animated.Value(WINDOW_HEIGHT)).current;
 
   const { onResume, onRestart } = props;
 
@@ -42,6 +41,14 @@ export const MenuView: FC<MenuViewProps> = (props) => {
     ).start(callback);
   }
 
+  const enterWordList = () => {
+    setMenuState(MenuState.WORDLIST);
+  }
+
+  const enterMainMenu = () => {
+    setMenuState(MenuState.MAIN_MENU);
+  }
+
   return (
     <Animated.View style={[
       styles.menu,
@@ -54,14 +61,19 @@ export const MenuView: FC<MenuViewProps> = (props) => {
       }
     ]}>
       {
-        mainStore.menuState === MenuState.MAIN_MENU && (
+        menuState === MenuState.MAIN_MENU && (
           <MainMenuView 
             onResume={menuMoveOut(onResume)}
+            onEnterWordList={enterWordList}
           />
         )
       }
       {
-        mainStore.menuState === MenuState.WORD_LIST && <WordListView />
+        menuState === MenuState.WORDLIST && (
+          <WordListView
+            onReturn={enterMainMenu}
+          />
+        )
       }
     </Animated.View>
   )

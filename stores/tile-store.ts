@@ -6,14 +6,18 @@ import {
   checkWord,
   removeChosenTiles,
   triggerTapSound,
-  shuffleTiles
+  shuffleTiles,
+  getScoreForWord
 } from '../utils';
 
-import { TileAnimationType, Tile, TileMatrix } from '../models';
+import { TileAnimationType, Tile, TileMatrix, ConfirmedWord } from '../models';
+import { getScoreSystemStoreInstance, ScoreSystemStore } from './score-system-store';
 
 class TileStore {
-  tiles: TileMatrix = [];
-  chosenTiles: Tile[] = [];
+  public tiles: TileMatrix = [];
+  public chosenTiles: Tile[] = [];
+
+  private scoreSystemStore: ScoreSystemStore;
 
   constructor() {
     makeAutoObservable(this, {
@@ -26,6 +30,7 @@ class TileStore {
       shuffle: action.bound
     });
     this.reset();
+    this.scoreSystemStore = getScoreSystemStoreInstance();
   }
 
   reset(): void {
@@ -96,6 +101,10 @@ class TileStore {
   }
 
   confirmWord() {
+    this.scoreSystemStore.addConfirmedWord(new ConfirmedWord(
+      this.chosenLetters,
+      getScoreForWord(this.chosenLetters)
+    ));
     removeChosenTiles(this.tiles);
     this.clearChosen();
     updateTilePositions(this.tiles, TileAnimationType.FALL_DOWN);

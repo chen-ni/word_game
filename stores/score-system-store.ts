@@ -1,9 +1,9 @@
-import { action, computed, makeAutoObservable, observable } from 'mobx';
+import { makeAutoObservable, observable } from 'mobx';
 
-import { WordWithScore } from '../models';
+import { ConfirmedWord } from '../models';
 
-class ScoreSystemStore {
-  public confirmedWords: WordWithScore[] = [];
+export class ScoreSystemStore {
+  public confirmedWords: ConfirmedWord[] = [];
 
   constructor() {
     makeAutoObservable(this, {
@@ -11,7 +11,7 @@ class ScoreSystemStore {
     })
   }
 
-  public addConfirmedWord(wordWithScore: WordWithScore): void {
+  public addConfirmedWord(wordWithScore: ConfirmedWord): void {
     for (let i = 0; i < this.confirmedWords.length; i++) {
       if (wordWithScore.score > this.confirmedWords[i].score) {
         this.confirmedWords.splice(i, 0, wordWithScore);

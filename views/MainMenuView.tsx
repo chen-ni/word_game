@@ -4,15 +4,17 @@ import { menuStyles as styles } from "../stylesheets";
 
 interface MainMenuViewProps {
   onResume: () => void;
+  onEnterWordList: () => void;
 }
 
 export const MainMenuView: FC<MainMenuViewProps> = (props) => {
-  const { onResume } = props;
+  const { onResume, onEnterWordList } = props;
 
   return (
     <>
       <TouchableOpacity
         style={styles.menuOption}
+        onPress={onEnterWordList}
       >
         <Text style={[styles.menuOptionText, styles.menuText, styles.withMarginBottom]}>
           VIEW WORDLIST
