@@ -19,6 +19,8 @@ import {
 
 import {
   CHOSEN_LETTERS_BOARD_HEIGHT,
+  CHOSEN_LETTERS_MOVE_IN_TIME,
+  CHOSEN_LETTERS_MOVE_OUT_TIME,
   WINDOW_WIDTH
 } from '../constants';
 
@@ -50,7 +52,7 @@ export const ChosenLettersView = observer(() => {
         animatedTranslateY,
         {
           toValue: CHOSEN_LETTERS_BOARD_HEIGHT,
-          duration: 100,
+          duration: CHOSEN_LETTERS_MOVE_IN_TIME,
           useNativeDriver: true
         }
       ).start();
@@ -62,7 +64,7 @@ export const ChosenLettersView = observer(() => {
         animatedTranslateY,
         {
           toValue: 0,
-          duration: 100,
+          duration: CHOSEN_LETTERS_MOVE_OUT_TIME,
           useNativeDriver: true
         }
       ).start();

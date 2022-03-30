@@ -20,9 +20,9 @@ export const MainMenuView: FC<MainMenuViewProps> = (props) => {
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.menuOption}
+        onPress={onResume}
       >
         <Text 
-          onPress={onResume}
           style={[styles.menuOptionText, styles.menuText, styles.withMarginBottom]}>
           RESUME
         </Text>

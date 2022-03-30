@@ -2,7 +2,7 @@ import React, { FC, useRef, useEffect } from "react";
 import { Animated } from "react-native";
 import { MenuState } from '../models';
 import { getMainStoreInstance } from "../stores";
-import { WINDOW_HEIGHT } from "../constants";
+import { MENU_MOVE_IN_TIME, MENU_MOVE_OUT_TIME, WINDOW_HEIGHT } from "../constants";
 import { menuStyles as styles } from "../stylesheets";
 import { MainMenuView } from './MainMenuView';
 import { WordListView } from './WordListView';
@@ -24,7 +24,7 @@ export const MenuView: FC<MenuViewProps> = (props) => {
       animatedTranslateY,
       {
         toValue: 0,
-        duration: 100,
+        duration: MENU_MOVE_IN_TIME,
         useNativeDriver: true
       }
     ).start();
@@ -36,7 +36,7 @@ export const MenuView: FC<MenuViewProps> = (props) => {
       animatedTranslateY,
       {
         toValue: WINDOW_HEIGHT,
-        duration: 100,
+        duration: MENU_MOVE_OUT_TIME,
         useNativeDriver: true
       }
     ).start(callback);
@@ -55,7 +55,9 @@ export const MenuView: FC<MenuViewProps> = (props) => {
     ]}>
       {
         mainStore.menuState === MenuState.MAIN_MENU && (
-          <MainMenuView onResume={menuMoveOut(onResume)} />
+          <MainMenuView 
+            onResume={menuMoveOut(onResume)}
+          />
         )
       }
       {

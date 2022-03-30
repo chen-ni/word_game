@@ -8,7 +8,7 @@ export const CONNECTION_HEIGHT = TILE_SIZE * 0.7;
 
 // Menu
 export const MENU_BACKGROUND_COLOR = '#000';
-export const MENU_BACKGROUND_OPACITY = 0.5;
+export const MENU_BACKGROUND_OPACITY = 0.8;
 export const MENU_SCORE_COLOR = '#ab8d38';
 export const MENU_SCORE_FONT_SIZE = WINDOW_WIDTH * 0.3;
 export const MENU_OPTION_COLOR = '#fff';
