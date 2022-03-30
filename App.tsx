@@ -10,7 +10,7 @@ import {
   TileMatrixView,
   TileInteractionLayerView,
 } from './views';
-import { initializeSounds } from './utils';
+import { initializeSounds, stopBackgroundMusic } from './utils';
 import { GAME_BACKGROUND_COLOR, TILE_SIZE } from './constants';
 import { getTileStoreInstance } from './stores';
 import { MenuView } from './views';
@@ -23,7 +23,11 @@ export default function App() {
   // initialization
   useEffect(() => {
     // sounds
-    initializeSounds();
+    (async () => { await initializeSounds();})();
+
+    return () => {
+      stopBackgroundMusic();
+    };
   }, []);
 
   const showMenu = () => {

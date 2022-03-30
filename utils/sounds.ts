@@ -1,25 +1,44 @@
 import { Audio } from 'expo-av';
 
-export let tileCrashSound: Audio.Sound;
-export let tapSounds: Audio.Sound[];
+let backgroundMusic: Audio.Sound;
+let tileCrashSound: Audio.Sound;
+let tapSounds: Audio.Sound[];
 
 export async function initializeSounds() {
+  // load background music
+  const { sound: backgroundMusicTmp } = await Audio.Sound.createAsync(
+    require('../assets/audio/bgm.m4a')
+  );
+  backgroundMusic = backgroundMusicTmp;
+  startBackgroundMusic();
+
+  // load tile crash sound
   const { sound } = await Audio.Sound.createAsync(
-    require('../assets/sounds/tile_crash.m4a')
+    require('../assets/audio/tile_crash.m4a')
   );
   tileCrashSound = sound;
 
+  // load tap sounds
   tapSounds = [null, null, null, null, null];
   [ // because require doesn't support dynamic string
-    require('../assets/sounds/1.m4a'),
-    require('../assets/sounds/2.m4a'),
-    require('../assets/sounds/3.m4a'),
-    require('../assets/sounds/4.m4a'),
-    require('../assets/sounds/5.m4a')
+    require('../assets/audio/1.m4a'),
+    require('../assets/audio/2.m4a'),
+    require('../assets/audio/3.m4a'),
+    require('../assets/audio/4.m4a'),
+    require('../assets/audio/5.m4a')
   ].map(async (resource, index) => {
     const { sound } = await Audio.Sound.createAsync(resource);
     tapSounds[index] = sound;
   })
+}
+
+export function startBackgroundMusic() {
+  backgroundMusic.setIsLoopingAsync(true);
+  backgroundMusic.replayAsync();
+}
+
+export function stopBackgroundMusic() {
+  backgroundMusic.stopAsync();
 }
 
 export function triggerTapSound(numOfChosenTiles) {
@@ -28,9 +47,7 @@ export function triggerTapSound(numOfChosenTiles) {
   }
   
   let index = Math.min(numOfChosenTiles - 1, 4);
-
   const sound = tapSounds[index];
-
   sound.replayAsync();
 }
 
