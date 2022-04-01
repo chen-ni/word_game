@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import {
   StyleSheet, View, SafeAreaView, Text,
 } from 'react-native';
+import { observer } from "mobx-react-lite"
 
 import { GameState } from './models';
 import {
@@ -12,14 +13,12 @@ import {
 } from './views';
 import { initializeSounds, stopBackgroundMusic } from './utils';
 import { GAME_BACKGROUND_COLOR, TILE_SIZE } from './constants';
-import { getTileStoreInstance } from './stores';
 import { MenuView } from './views';
+import { getMainStoreInstance } from './stores/main-store';
 
-export default function App() {
-  const [gameState, setGameState] = useState<GameState>(GameState.NORMAL);
-
-  const tileStore = getTileStoreInstance();
-
+function App() {
+  const mainStore = getMainStoreInstance();
+  
   // initialization
   useEffect(() => {
     // sounds
@@ -30,19 +29,6 @@ export default function App() {
     };
   }, []);
 
-  const showMenu = () => {
-    setGameState(GameState.MENU);
-  };
-
-  const resumeGame = () => {
-    setGameState(GameState.NORMAL);
-  };
-
-  const restartGame = () => {
-    tileStore.reset();
-    setGameState(GameState.NORMAL);
-  }
-
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -50,31 +36,23 @@ export default function App() {
       </View>
       <Text 
         style={styles.menuButton}
-        onPress={showMenu}
+        onPress={() => {mainStore.showMenu();}}
       >
         MENU
       </Text>
-      {!tileStore.chosenLetters && (
-        <View>
-          <Text style={styles.shuffleButton} onPress={tileStore.shuffle}>
-            shuffle
-          </Text>
-        </View>
-      )}
       <TileMatrixView />
       <ChosenTileConnectionsView />
       <TileInteractionLayerView />
       {
-        gameState === GameState.MENU && (
-          <MenuView
-            onResume={resumeGame}
-            onRestart={restartGame}
-          />
+        mainStore.gameState === GameState.MENU && (
+          <MenuView />
         )
       }
     </SafeAreaView>
   );
-}
+};
+
+export default observer(App);
 
 const styles = StyleSheet.create({
   container: {

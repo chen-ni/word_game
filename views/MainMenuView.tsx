@@ -1,20 +1,24 @@
 import React, { FC } from "react";
-import { Text, TouchableOpacity } from "react-native";
+import { Text, TouchableOpacity, Animated, GestureResponderEvent } from "react-native";
+import { getTileStoreInstance } from "../stores";
+import { getMainStoreInstance } from "../stores/main-store";
 import { menuStyles as styles } from "../stylesheets";
 
 interface MainMenuViewProps {
-  onResume: () => void;
-  onEnterWordList: () => void;
+  menuMoveOut: (callback?: Function) => ((event: GestureResponderEvent) => void);
 }
 
 export const MainMenuView: FC<MainMenuViewProps> = (props) => {
-  const { onResume, onEnterWordList } = props;
+  const { menuMoveOut } = props;
+  
+  const mainStore = getMainStoreInstance();
+  const tileStore = getTileStoreInstance();
 
   return (
     <>
       <TouchableOpacity
         style={styles.menuOption}
-        onPress={onEnterWordList}
+        onPress={() => {mainStore.enterWordlist();}}
       >
         <Text style={[styles.menuOptionText, styles.menuText, styles.withMarginBottom]}>
           VIEW WORDLIST
@@ -22,7 +26,15 @@ export const MainMenuView: FC<MainMenuViewProps> = (props) => {
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.menuOption}
-        onPress={onResume}
+        onPress={menuMoveOut(tileStore.shuffle)}
+      >
+        <Text style={[styles.menuOptionText, styles.menuText, styles.withMarginBottom]}>
+          SHUFFLE
+        </Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.menuOption}
+        onPress={menuMoveOut()}
       >
         <Text 
           style={[styles.menuOptionText, styles.menuText, styles.withMarginBottom]}>

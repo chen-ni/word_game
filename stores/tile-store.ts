@@ -13,7 +13,7 @@ import {
 import { TileAnimationType, Tile, TileMatrix, ConfirmedWord } from '../models';
 import { getScoreSystemStoreInstance, ScoreSystemStore } from './score-system-store';
 
-class TileStore {
+export class TileStore {
   public tiles: TileMatrix = [];
   public chosenTiles: Tile[] = [];
 

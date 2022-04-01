@@ -1,21 +1,18 @@
-import React, { FC, useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect } from "react";
 import { Animated } from "react-native";
+import { observer } from "mobx-react-lite"
+
 import { MenuState } from '../models';
 import { MENU_MOVE_IN_TIME, MENU_MOVE_OUT_TIME, WINDOW_HEIGHT } from "../constants";
 import { menuStyles as styles } from "../stylesheets";
 import { MainMenuView } from './MainMenuView';
 import { WordListView } from './WordListView';
+import { getMainStoreInstance } from "../stores/main-store";
 
-interface MenuViewProps {
-  onResume: () => void;
-  onRestart: () => void;
-}
-
-export const MenuView: FC<MenuViewProps> = (props) => {
-  const [menuState, setMenuState] = useState<MenuState>(MenuState.MAIN_MENU);
+export const MenuView = observer(() => {
   const animatedTranslateY = useRef(new Animated.Value(WINDOW_HEIGHT)).current;
 
-  const { onResume, onRestart } = props;
+  const mainStore = getMainStoreInstance();
 
   useEffect(() => {
     // move in
@@ -29,7 +26,7 @@ export const MenuView: FC<MenuViewProps> = (props) => {
     ).start();
   }, [])
 
-  const menuMoveOut = (callback) => () => {
+  const menuMoveOut = (callback?: Function) => () => {
     // move out
     Animated.timing(
       animatedTranslateY,
@@ -38,15 +35,10 @@ export const MenuView: FC<MenuViewProps> = (props) => {
         duration: MENU_MOVE_OUT_TIME,
         useNativeDriver: true
       }
-    ).start(callback);
-  }
-
-  const enterWordList = () => {
-    setMenuState(MenuState.WORDLIST);
-  }
-
-  const enterMainMenu = () => {
-    setMenuState(MenuState.MAIN_MENU);
+    ).start(() => {
+      mainStore.resumeGame();
+      callback?.();
+    });
   }
 
   return (
@@ -61,20 +53,17 @@ export const MenuView: FC<MenuViewProps> = (props) => {
       }
     ]}>
       {
-        menuState === MenuState.MAIN_MENU && (
+        mainStore.menuState === MenuState.MAIN_MENU && (
           <MainMenuView 
-            onResume={menuMoveOut(onResume)}
-            onEnterWordList={enterWordList}
+            menuMoveOut={menuMoveOut}
           />
         )
       }
       {
-        menuState === MenuState.WORDLIST && (
-          <WordListView
-            onReturn={enterMainMenu}
-          />
+        mainStore.menuState === MenuState.WORDLIST && (
+          <WordListView />
         )
       }
     </Animated.View>
   )
-}
+})
