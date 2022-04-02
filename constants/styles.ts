@@ -6,7 +6,10 @@ export const CHOSEN_LETTERS_BOARD_HEIGHT = 100;
 
 export const CONNECTION_HEIGHT = TILE_SIZE * 0.7;
 
-// Menu
+// menu button
+export const MENU_BUTTON_FONT_SIZE = TILE_SIZE * 0.5;
+
+// menu
 export const MENU_BACKGROUND_COLOR = '#000';
 export const MENU_BACKGROUND_OPACITY = 0.8;
 export const MENU_SCORE_COLOR = '#ab8d38';

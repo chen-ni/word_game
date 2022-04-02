@@ -12,13 +12,15 @@ import {
   TileInteractionLayerView,
 } from './views';
 import { initializeSounds, stopBackgroundMusic } from './utils';
-import { GAME_BACKGROUND_COLOR, TILE_SIZE } from './constants';
+import { GAME_BACKGROUND_COLOR, MENU_BUTTON_FONT_SIZE, TILE_SIZE } from './constants';
 import { MenuView } from './views';
 import { getMainStoreInstance } from './stores/main-store';
+import { getTileStoreInstance } from './stores';
 
 function App() {
   const mainStore = getMainStoreInstance();
-  
+  const tileStore = getTileStoreInstance();
+
   // initialization
   useEffect(() => {
     // sounds
@@ -31,15 +33,19 @@ function App() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <ChosenLettersView />
-      </View>
       <Text 
         style={styles.menuButton}
         onPress={() => {mainStore.showMenu();}}
       >
         MENU
       </Text>
+      {
+        tileStore.chosenTiles.length > 0 && (
+          <View style={styles.header}>
+            <ChosenLettersView />
+          </View>
+        )
+      }
       <TileMatrixView />
       <ChosenTileConnectionsView />
       <TileInteractionLayerView />
@@ -72,9 +78,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 30,
     left: 0,
-    width: TILE_SIZE,
-    height: TILE_SIZE,
-    backgroundColor: 'white',
+    fontSize: MENU_BUTTON_FONT_SIZE,
     color: 'black',
   },
   shuffleButton: {
