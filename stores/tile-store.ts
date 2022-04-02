@@ -7,7 +7,9 @@ import {
   removeChosenTiles,
   triggerTapSound,
   shuffleTiles,
-  getScoreForWord
+  getScoreForWord,
+  triggerShuffleSound,
+  triggerConfirmWordSound
 } from '../utils';
 
 import { TileAnimationType, Tile, TileMatrix, ConfirmedWord } from '../models';
@@ -107,12 +109,14 @@ export class TileStore {
     ));
     removeChosenTiles(this.tiles);
     this.clearChosen();
+    triggerConfirmWordSound();
     updateTilePositions(this.tiles, TileAnimationType.FALL_DOWN);
     this.tiles = [...this.tiles];
   }
 
   shuffle () {
     this.clearChosen();
+    triggerShuffleSound();
     const shuffledTiles = shuffleTiles(this.tiles);
     this.tiles = [...shuffledTiles];
   }

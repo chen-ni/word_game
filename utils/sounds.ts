@@ -3,6 +3,8 @@ import { Audio } from 'expo-av';
 let backgroundMusic: Audio.Sound;
 let tileCrashSound: Audio.Sound;
 let tapSounds: Audio.Sound[];
+let shuffleSound: Audio.Sound;
+let confirmWordSound: Audio.Sound;
 
 export async function initializeSounds() {
   // load background music
@@ -30,6 +32,18 @@ export async function initializeSounds() {
     const { sound } = await Audio.Sound.createAsync(resource);
     tapSounds[index] = sound;
   })
+
+  // load shuffle sounds
+  const { sound: shuffleSoundTmp } = await Audio.Sound.createAsync(
+    require('../assets/audio/shuffle.m4a')
+  );
+  shuffleSound = shuffleSoundTmp;
+
+  // load confirm word sound
+  const { sound: confirmWordSoundTmp } = await Audio.Sound.createAsync(
+    require('../assets/audio/confirm_word.mp3')
+  );
+  confirmWordSound = confirmWordSoundTmp;
 }
 
 export function startBackgroundMusic() {
@@ -53,4 +67,12 @@ export function triggerTapSound(numOfChosenTiles) {
 
 export function triggerTileCrashSound() {
   tileCrashSound.replayAsync();
+}
+
+export function triggerShuffleSound() {
+  shuffleSound.replayAsync();
+}
+
+export function triggerConfirmWordSound() {
+  confirmWordSound.replayAsync();
 }
