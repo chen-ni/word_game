@@ -1,7 +1,7 @@
 import React, { FC } from "react";
-import { Text, TouchableOpacity } from "react-native";
+import { Text, TouchableOpacity, StyleSheet } from "react-native";
 
-import { menuStyles as styles } from "../stylesheets";
+import { menuStyles } from "../stylesheets";
 import { ScoreSystemStore, getScoreSystemStoreInstance } from "../stores";
 import { MainStore, getMainStoreInstance } from "../stores/main-store";
 
@@ -14,7 +14,7 @@ export const WordListView: FC = () => {
       {
         scoreSystemStore.confirmedWords.map(confirmedWord => (
           <Text 
-            style={{backgroundColor: 'white'}}
+            style={styles.word}
             key={confirmedWord.id}
           >
             {confirmedWord.toString()}
@@ -22,13 +22,19 @@ export const WordListView: FC = () => {
         ))
       }
       <TouchableOpacity
-        style={styles.menuOption}
+        style={menuStyles.menuOption}
         onPress={() => {mainStore.enterMainMenu();}}
       >
-        <Text style={[styles.menuOptionText, styles.menuText, styles.withMarginBottom]}>
+        <Text style={[menuStyles.menuOptionText, menuStyles.menuText, menuStyles.withMarginBottom]}>
           RETURN
         </Text>
       </TouchableOpacity>
     </>
   )
 }
+
+const styles = StyleSheet.create({
+  word: {
+    color: 'white'
+  }
+})

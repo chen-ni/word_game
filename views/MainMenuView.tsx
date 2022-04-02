@@ -41,6 +41,15 @@ export const MainMenuView: FC<MainMenuViewProps> = (props) => {
           RESUME
         </Text>
       </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.menuOption}
+        onPress={menuMoveOut(mainStore.restartGame)}
+      >
+        <Text 
+          style={[styles.menuOptionText, styles.menuText, styles.withMarginBottom]}>
+          RESTART
+        </Text>
+      </TouchableOpacity>
     </>
   )
 }

@@ -11,7 +11,11 @@ export class ScoreSystemStore {
     })
   }
 
-  public addConfirmedWord(wordWithScore: ConfirmedWord): void {
+  reset(): void {
+    this.confirmedWords = [];
+  }
+
+  addConfirmedWord(wordWithScore: ConfirmedWord): void {
     for (let i = 0; i < this.confirmedWords.length; i++) {
       if (wordWithScore.score > this.confirmedWords[i].score) {
         this.confirmedWords.splice(i, 0, wordWithScore);

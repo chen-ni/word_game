@@ -1,6 +1,7 @@
 import { makeAutoObservable, observable } from 'mobx';
 
 import { GameState, MenuState } from '../models';
+import { getScoreSystemStoreInstance } from './score-system-store';
 import { getTileStoreInstance } from './tile-store';
 
 export class MainStore {
@@ -34,6 +35,7 @@ export class MainStore {
 
   restartGame(): void {
     getTileStoreInstance().reset();
+    getScoreSystemStoreInstance().reset();
     this.gameState = GameState.NORMAL;
   }
 }
