@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import {
-  StyleSheet, View, SafeAreaView, Text,
+  StyleSheet, View, SafeAreaView, Text, StatusBar
 } from 'react-native';
 import { observer } from "mobx-react-lite"
 
@@ -10,12 +10,12 @@ import {
   ChosenTileConnectionsView,
   TileMatrixView,
   TileInteractionLayerView,
+  MenuView,
+  ScoreBoardView
 } from './views';
 import { initializeSounds, stopBackgroundMusic } from './utils';
-import { GAME_BACKGROUND_COLOR, MENU_BUTTON_FONT_SIZE, TILE_SIZE } from './constants';
-import { MenuView } from './views';
-import { getMainStoreInstance } from './stores/main-store';
-import { getTileStoreInstance } from './stores';
+import { GAME_BACKGROUND_COLOR, MENU_BUTTON_FONT_SIZE, PAGE_MARGIN, TILE_SIZE } from './constants';
+import { getMainStoreInstance, getTileStoreInstance } from './stores';
 
 function App() {
   const mainStore = getMainStoreInstance();
@@ -34,11 +34,14 @@ function App() {
   return (
     <SafeAreaView style={styles.container}>
       <Text 
-        style={styles.menuButton}
+        style={[styles.menuButton, {
+          top: StatusBar.currentHeight,
+        }]}
         onPress={() => {mainStore.showMenu();}}
       >
         MENU
       </Text>
+      <ScoreBoardView />
       {
         tileStore.chosenTiles.length > 0 && (
           <View style={styles.header}>
@@ -76,18 +79,8 @@ const styles = StyleSheet.create({
   },
   menuButton: {
     position: 'absolute',
-    top: 30,
-    left: 0,
+    left: PAGE_MARGIN,
     fontSize: MENU_BUTTON_FONT_SIZE,
     color: 'black',
-  },
-  shuffleButton: {
-    position: 'absolute',
-    top: -100,
-    left: 0,
-    width: TILE_SIZE,
-    height: TILE_SIZE,
-    backgroundColor: 'white',
-    color: 'black',
-  },
+  }
 });

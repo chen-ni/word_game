@@ -1,7 +1,6 @@
 import React, { FC } from "react";
-import { Text, TouchableOpacity, Animated, GestureResponderEvent } from "react-native";
-import { getTileStoreInstance } from "../stores";
-import { getMainStoreInstance } from "../stores/main-store";
+import { Text, TouchableOpacity, GestureResponderEvent } from "react-native";
+import { getTileStoreInstance, getMainStoreInstance } from "../stores";
 import { menuStyles as styles } from "../stylesheets";
 
 interface MainMenuViewProps {

@@ -2,8 +2,7 @@ import React, { FC } from "react";
 import { Text, TouchableOpacity, StyleSheet } from "react-native";
 
 import { menuStyles } from "../stylesheets";
-import { ScoreSystemStore, getScoreSystemStoreInstance } from "../stores";
-import { MainStore, getMainStoreInstance } from "../stores/main-store";
+import { MainStore, getMainStoreInstance, ScoreSystemStore, getScoreSystemStoreInstance } from "../stores";
 
 export const WordListView: FC = () => {
   const mainStore: MainStore = getMainStoreInstance();

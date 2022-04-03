@@ -7,7 +7,7 @@ import { MENU_MOVE_IN_TIME, MENU_MOVE_OUT_TIME, WINDOW_HEIGHT } from "../constan
 import { menuStyles as styles } from "../stylesheets";
 import { MainMenuView } from './MainMenuView';
 import { WordListView } from './WordListView';
-import { getMainStoreInstance } from "../stores/main-store";
+import { getMainStoreInstance } from "../stores";
 
 export const MenuView = observer(() => {
   const animatedTranslateY = useRef(new Animated.Value(WINDOW_HEIGHT)).current;
