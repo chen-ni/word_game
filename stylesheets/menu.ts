@@ -27,7 +27,8 @@ export const menuStyles = StyleSheet.create({
   },
   menuOptionText: {
     color: MENU_OPTION_COLOR,
-    fontSize: MENU_OPTION_FONT_SIZE
+    fontSize: MENU_OPTION_FONT_SIZE,
+    textDecorationLine: "underline",
   },
   withMarginBottom: {
     marginBottom: MENU_MARGIN_BETWEEN_OPTIONS

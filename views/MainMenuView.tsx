@@ -17,10 +17,19 @@ export const MainMenuView: FC<MainMenuViewProps> = (props) => {
     <>
       <TouchableOpacity
         style={styles.menuOption}
+        onPress={menuMoveOut()}
+      >
+        <Text 
+          style={[styles.menuOptionText, styles.menuText, styles.withMarginBottom]}>
+          Resume
+        </Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.menuOption}
         onPress={() => {mainStore.enterWordlist();}}
       >
         <Text style={[styles.menuOptionText, styles.menuText, styles.withMarginBottom]}>
-          VIEW WORDLIST
+          Wordlist
         </Text>
       </TouchableOpacity>
       <TouchableOpacity
@@ -28,16 +37,7 @@ export const MainMenuView: FC<MainMenuViewProps> = (props) => {
         onPress={menuMoveOut(tileStore.shuffle)}
       >
         <Text style={[styles.menuOptionText, styles.menuText, styles.withMarginBottom]}>
-          SHUFFLE
-        </Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.menuOption}
-        onPress={menuMoveOut()}
-      >
-        <Text 
-          style={[styles.menuOptionText, styles.menuText, styles.withMarginBottom]}>
-          RESUME
+          Shuffle
         </Text>
       </TouchableOpacity>
       <TouchableOpacity
@@ -46,7 +46,7 @@ export const MainMenuView: FC<MainMenuViewProps> = (props) => {
       >
         <Text 
           style={[styles.menuOptionText, styles.menuText, styles.withMarginBottom]}>
-          RESTART
+          Restart
         </Text>
       </TouchableOpacity>
     </>

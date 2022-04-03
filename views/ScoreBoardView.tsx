@@ -3,7 +3,7 @@ import { Text, StyleSheet, StatusBar } from "react-native";
 import { observer } from "mobx-react-lite"
 
 import { getScoreSystemStoreInstance } from "../stores";
-import { PAGE_MARGIN, SCORE_FONT_SIZE } from "../constants";
+import { PAGE_MARGIN, SCORE_COLOR, SCORE_FONT_SIZE } from "../constants";
 
 export const ScoreBoardView = observer(() => {
   const scoreSystemStore = getScoreSystemStoreInstance();
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 0,
     right: PAGE_MARGIN,
-    color: "white",
+    color: SCORE_COLOR,
     fontSize: SCORE_FONT_SIZE,
   }
 });

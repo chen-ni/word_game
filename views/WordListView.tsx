@@ -25,7 +25,7 @@ export const WordListView: FC = () => {
         onPress={() => {mainStore.enterMainMenu();}}
       >
         <Text style={[menuStyles.menuOptionText, menuStyles.menuText, menuStyles.withMarginBottom]}>
-          RETURN
+          Return
         </Text>
       </TouchableOpacity>
     </>
